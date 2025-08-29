@@ -1,0 +1,15 @@
+{
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit",
+      "source.removeUnusedImports": "always",
+      "source.organizeImports": "always"
+    },
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "[typescript]": {
+      "editor.formatOnSave": true,
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "git.ignoreLimitWarning": true
+  }
+  

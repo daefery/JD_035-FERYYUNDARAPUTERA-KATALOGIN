@@ -1,5 +1,10 @@
 import Image from "next/image";
 import { Geist, Geist_Mono } from "next/font/google";
+import { useAuth } from "@/contexts/AuthContext";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import LoadingSpinner from "@/components/LoadingSpinner";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -12,6 +17,26 @@ const geistMono = Geist_Mono({
 });
 
 export default function Home() {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  // Redirect authenticated users to dashboard
+  useEffect(() => {
+    if (!loading && user) {
+      router.push('/dashboard');
+    }
+  }, [user, loading, router]);
+
+  // Show loading while checking authentication
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
+  // Don't render homepage if user is authenticated
+  if (user) {
+    return null;
+  }
+
   return (
     <div
       className={`${geistSans.className} ${geistMono.className} font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20`}
@@ -27,40 +52,25 @@ export default function Home() {
         />
         <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
           <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/pages/index.tsx
-            </code>
-            .
+            Welcome to <strong>Katalogin</strong> - Your Digital Catalog Solution
           </li>
           <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
+            Sign in or create an account to get started.
           </li>
         </ol>
         <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
+          <Link
             className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/login"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
+            Sign In
+          </Link>
+          <Link
             className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/register"
           >
-            Read our docs
-          </a>
+            Sign Up
+          </Link>
         </div>
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
