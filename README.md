@@ -87,7 +87,7 @@ A modern, full-stack web application for creating beautiful digital catalogs and
    ```
 
 6. **Open your browser**
-   Navigate to [http://localhost:3000](http://localhost:3000)
+   Navigate to [http://localhost:4001](http://localhost:4001)
 
 ## 📁 Project Structure
 
