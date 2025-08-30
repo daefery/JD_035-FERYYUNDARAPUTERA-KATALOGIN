@@ -10,11 +10,16 @@
     "deploy": "vercel --prod"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
     "@supabase/ssr": "^0.7.0",
     "@supabase/supabase-js": "^2.56.0",
+    "mapbox-gl": "^3.14.0",
     "next": "15.5.2",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "recharts": "^3.1.2"
   },
   "engines": {
     "node": ">=18.0.0",

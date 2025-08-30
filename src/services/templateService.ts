@@ -173,17 +173,76 @@ export const templateService = {
     templateId: string
   ): Promise<void> {
     try {
-      const { error } = await supabase.from("store_templates").upsert({
-        store_id: storeId,
-        template_id: templateId,
-        applied_at: new Date().toISOString(),
-        applied_by: (await supabase.auth.getUser()).data.user?.id,
-        is_active: true,
-      });
+      // First, check if this template is already assigned to this store
+      const { data: existingTemplate, error: checkError } = await supabase
+        .from("store_templates")
+        .select("id")
+        .eq("store_id", storeId)
+        .eq("template_id", templateId)
+        .single();
 
-      if (error) {
-        console.error("Error applying template to store:", error);
-        throw new Error(error.message);
+      if (checkError && checkError.code !== "PGRST116") {
+        // PGRST116 = no rows returned
+        console.error("Error checking existing template:", checkError);
+        throw new Error(checkError.message);
+      }
+
+      if (existingTemplate) {
+        // Template already exists, just activate it and deactivate others
+        const { error: updateError } = await supabase
+          .from("store_templates")
+          .update({
+            is_active: true,
+            applied_at: new Date().toISOString(),
+            applied_by: (await supabase.auth.getUser()).data.user?.id,
+          })
+          .eq("id", existingTemplate.id);
+
+        if (updateError) {
+          console.error("Error updating existing template:", updateError);
+          throw new Error(updateError.message);
+        }
+
+        // Deactivate other templates for this store
+        const { error: deactivateError } = await supabase
+          .from("store_templates")
+          .update({ is_active: false })
+          .eq("store_id", storeId)
+          .neq("id", existingTemplate.id);
+
+        if (deactivateError) {
+          console.error("Error deactivating other templates:", deactivateError);
+          throw new Error(deactivateError.message);
+        }
+      } else {
+        // Template doesn't exist, deactivate existing templates and insert new one
+        const { error: deactivateError } = await supabase
+          .from("store_templates")
+          .update({ is_active: false })
+          .eq("store_id", storeId)
+          .eq("is_active", true);
+
+        if (deactivateError) {
+          console.error(
+            "Error deactivating existing templates:",
+            deactivateError
+          );
+          throw new Error(deactivateError.message);
+        }
+
+        // Insert the new template
+        const { error } = await supabase.from("store_templates").insert({
+          store_id: storeId,
+          template_id: templateId,
+          applied_at: new Date().toISOString(),
+          applied_by: (await supabase.auth.getUser()).data.user?.id,
+          is_active: true,
+        });
+
+        if (error) {
+          console.error("Error applying template to store:", error);
+          throw new Error(error.message);
+        }
       }
     } catch (error) {
       console.error("Error in applyTemplateToStore:", error);

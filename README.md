@@ -10,6 +10,7 @@ A modern, full-stack web application for creating beautiful digital catalogs and
 - **Customizable Layouts** - Each template has unique styling and layout
 - **Easy Template Switching** - Change your store's appearance instantly
 - **Coming Soon Templates** - Preview upcoming themes
+- **Template Preview** - See how templates look before applying
 
 ### 🏪 **Store Management**
 
@@ -17,6 +18,8 @@ A modern, full-stack web application for creating beautiful digital catalogs and
 - **Location Services** - Interactive map with drag-and-drop pin placement
 - **Address Geocoding** - Automatic address lookup and coordinates
 - **Public Store Pages** - Beautiful, responsive store frontends
+- **Social Media Integration** - Add Facebook, Instagram, Twitter/X, TikTok links
+- **Store Analytics** - Comprehensive performance tracking and insights
 
 ### 📋 **Menu Management**
 
@@ -25,6 +28,26 @@ A modern, full-stack web application for creating beautiful digital catalogs and
 - **Image Upload** - Upload menu item images to Supabase Storage
 - **Pricing & Availability** - Set prices and availability status
 - **Featured Items** - Highlight special menu items
+- **Drag & Drop Reordering** - Easily reorder menu items with visual feedback
+- **Menu Analytics** - Track item performance and engagement
+
+### 📊 **Analytics Dashboard**
+
+- **Real-time Tracking** - Monitor store visits, page views, and interactions
+- **Interactive Charts** - Beautiful visualizations with Recharts
+- **Device Analytics** - Track mobile, desktop, and tablet usage
+- **User Behavior** - Analyze bounce rates, session duration, and engagement
+- **Geographic Data** - View visitor locations and peak hours
+- **Menu Performance** - Track which items are most popular
+- **Period Comparison** - Compare performance across different timeframes
+
+### 🚀 **Onboarding System**
+
+- **Guided Setup** - Step-by-step store creation process
+- **Template Selection** - Choose your preferred design during onboarding
+- **Category & Menu Setup** - Add categories and menu items during onboarding
+- **Store Launch** - One-click store publishing
+- **Mobile-Optimized** - Responsive onboarding experience
 
 ### 🔐 **Authentication & Security**
 
@@ -32,6 +55,7 @@ A modern, full-stack web application for creating beautiful digital catalogs and
 - **Google OAuth** - Social login integration
 - **Row Level Security** - Database-level security policies
 - **User Permissions** - Users can only manage their own stores
+- **Protected Routes** - Secure access to dashboard and analytics
 
 ### 🎯 **User Experience**
 
@@ -39,6 +63,18 @@ A modern, full-stack web application for creating beautiful digital catalogs and
 - **Animated Backgrounds** - Beautiful particle animations
 - **Loading States** - Smooth loading indicators
 - **Error Handling** - Graceful error management
+- **Dark Theme** - Consistent dark mode throughout
+- **Glassmorphism UI** - Modern, elegant design elements
+- **Smooth Animations** - Enhanced user interactions
+
+### 📱 **Public Store Features**
+
+- **Share Store** - Easy sharing with copy link and social media
+- **Contact Integration** - Click-to-call, email, and map directions
+- **Social Media Links** - Direct links to social platforms
+- **Featured Banner** - Highlight special announcements
+- **Back to Top** - Smooth scrolling navigation
+- **Mobile Optimized** - Perfect mobile experience
 
 ## 🚀 Quick Start
 
@@ -47,6 +83,7 @@ A modern, full-stack web application for creating beautiful digital catalogs and
 - Node.js 18+
 - npm, yarn, or pnpm
 - Supabase account
+- Mapbox account (for location services)
 
 ### Installation
 
@@ -77,8 +114,10 @@ A modern, full-stack web application for creating beautiful digital catalogs and
    - Run the SQL scripts in your Supabase SQL Editor:
      - `database/schema.sql` - Main database schema
      - `database/templates_schema.sql` - Template system
+     - `database/analytics_schema.sql` - Analytics tracking system
      - `database/fix_store_templates_public_access.sql` - Public access policies
      - `database/fix_public_menu_access.sql` - Menu public access
+     - `database/fix_all_analytics_rls_final_corrected.sql` - Analytics RLS policies
 
 5. **Start the development server**
 
@@ -98,26 +137,42 @@ katalogin/
 │   │   ├── ImageUpload.tsx  # Image upload component
 │   │   ├── MapLocationPicker.tsx # Interactive map component
 │   │   ├── TemplateRenderer.tsx # Dynamic template loader
+│   │   ├── SimpleAnalyticsChart.tsx # Custom chart components
+│   │   ├── SimpleAnalyticsDashboard.tsx # Analytics dashboard
+│   │   ├── EnhancedAnalyticsDashboard.tsx # Full-featured analytics
+│   │   ├── Modal.tsx # Reusable modal component
 │   │   └── ...
 │   ├── contexts/            # React contexts
 │   │   └── AuthContext.tsx  # Authentication context
 │   ├── pages/               # Next.js pages
 │   │   ├── dashboard/       # Admin dashboard pages
+│   │   │   ├── analytics.tsx # Analytics dashboard page
+│   │   │   ├── stores.tsx   # Store management
+│   │   │   └── ...
+│   │   ├── onboarding/      # Onboarding system
+│   │   │   ├── index.tsx    # Main onboarding page
+│   │   │   └── steps/       # Onboarding step components
 │   │   ├── store/           # Public store pages
 │   │   └── ...
 │   ├── services/            # API service functions
 │   │   ├── storeService.ts  # Store CRUD operations
-│   │   └── templateService.ts # Template management
+│   │   ├── templateService.ts # Template management
+│   │   ├── analyticsService.ts # Analytics tracking
+│   │   └── publicAnalyticsService.ts # Public analytics
 │   ├── templates/           # Store template components
-│   │   ├── RamenRestaurantTemplate.tsx
+│   │   ├── ModernRestaurantTemplate.tsx
 │   │   ├── DefaultTemplate.tsx
 │   │   └── index.ts
 │   ├── types/               # TypeScript type definitions
-│   │   └── database.ts      # Database entity types
+│   │   ├── database.ts      # Database entity types
+│   │   └── analytics.ts     # Analytics type definitions
+│   ├── utils/               # Utility functions
+│   │   └── analytics.ts     # Analytics tracking utilities
 │   └── styles/              # Global styles
 ├── database/                # SQL schema and migrations
 │   ├── schema.sql           # Main database schema
 │   ├── templates_schema.sql # Template system schema
+│   ├── analytics_schema.sql # Analytics system schema
 │   └── ...
 └── public/                  # Static assets
 ```
@@ -132,19 +187,47 @@ katalogin/
 - **templates** - Available store templates
 - **store_templates** - Store-template relationships
 
+### Analytics Tables
+
+- **store_visits** - Track store visits and sessions
+- **page_views** - Monitor page view activity
+- **user_interactions** - Track user engagement
+- **menu_item_analytics** - Menu item performance data
+- **daily_analytics** - Aggregated daily statistics
+
 ### Key Features
 
 - **UUID Primary Keys** - Secure, unique identifiers
 - **Row Level Security** - Database-level access control
 - **Automatic Timestamps** - Created/updated tracking
 - **Foreign Key Relationships** - Data integrity
+- **Analytics Triggers** - Automatic data aggregation
+
+## 📊 Analytics System
+
+### Tracking Features
+
+- **Store Visits** - Track unique visitors and sessions
+- **Page Views** - Monitor page engagement
+- **User Interactions** - Track clicks, social media engagement
+- **Menu Performance** - Analyze item popularity and engagement
+- **Device Analytics** - Mobile, desktop, tablet usage
+- **Geographic Data** - Visitor locations and peak hours
+
+### Dashboard Features
+
+- **Interactive Charts** - Bar, line, and pie charts
+- **Real-time Data** - Live analytics updates
+- **Period Comparison** - Compare different timeframes
+- **Export Options** - Download analytics data
+- **Mobile Responsive** - Works on all devices
 
 ## 🎨 Template System
 
 ### Available Templates
 
-- **Default Template** - Clean, modern design
-- **Ramen Restaurant** - Dark theme with elegant styling
+- **Modern Restaurant Template** - Elegant dark theme with modern styling
+- **Default Template** - Clean, professional design
 - **Coming Soon** - More templates in development
 
 ### Template Features
@@ -153,6 +236,26 @@ katalogin/
 - **Custom Styling** - Unique colors and layouts
 - **Menu Organization** - Category-based menu display
 - **Contact Information** - Integrated contact details
+- **Social Media Integration** - Built-in social links
+- **Analytics Integration** - Automatic tracking
+
+## 🚀 Onboarding System
+
+### Step-by-Step Process
+
+1. **Welcome** - Introduction and overview
+2. **Store Setup** - Basic store information
+3. **Template Selection** - Choose your design
+4. **Categories & Menu** - Add menu structure
+5. **Launch Store** - Publish your store
+
+### Features
+
+- **Guided Experience** - Clear instructions at each step
+- **Progress Tracking** - Visual progress indicator
+- **Data Persistence** - Save progress automatically
+- **Mobile Optimized** - Responsive design
+- **Error Handling** - Graceful error management
 
 ## 🔧 Configuration
 
@@ -174,6 +277,7 @@ NEXT_PUBLIC_MAPBOX_TOKEN=your_mapbox_token
 3. Set up storage buckets for images
 4. Configure RLS policies
 5. Run database migration scripts
+6. Set up analytics tracking
 
 ## 🚀 Deployment
 
@@ -207,6 +311,27 @@ npm run lint         # Run ESLint
 - **Prettier** - Code formatting
 - **Tailwind CSS** - Utility-first styling
 
+## 📈 Recent Updates
+
+### Latest Features Added
+
+- **📊 Analytics Dashboard** - Comprehensive store performance tracking
+- **🚀 Onboarding System** - Guided store setup process
+- **🎨 Enhanced Templates** - Improved template system
+- **📱 Mobile Optimization** - Better mobile experience
+- **🔗 Social Media Integration** - Facebook, Instagram, Twitter/X, TikTok
+- **📊 Interactive Charts** - Beautiful data visualizations
+- **🔄 Drag & Drop** - Menu item reordering
+- **📈 Real-time Analytics** - Live performance monitoring
+
+### Technical Improvements
+
+- **Row Level Security** - Enhanced database security
+- **Error Handling** - Better error management
+- **Performance** - Optimized loading and rendering
+- **Type Safety** - Improved TypeScript coverage
+- **Code Quality** - Better code organization
+
 ## 🤝 Contributing
 
 1. Fork the repository
@@ -225,6 +350,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Supabase** - Backend as a service
 - **Tailwind CSS** - Utility-first CSS framework
 - **Mapbox** - Location services
+- **Recharts** - Chart library
 - **Vercel** - Deployment platform
 
 ## 📞 Support
@@ -238,3 +364,5 @@ For support and questions:
 ---
 
 **Built with ❤️ using Next.js, TypeScript, and Supabase**
+
+_Last updated: December 2024_

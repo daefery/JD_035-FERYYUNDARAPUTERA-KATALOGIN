@@ -1,73 +1,83 @@
-import { useState } from 'react';
-import { useRouter } from 'next/router';
-import { useAuth } from '@/contexts/AuthContext';
-import ParticleBackground from '@/components/ParticleBackground';
-import LoadingSpinner from '@/components/LoadingSpinner';
-import ImageUpload from '@/components/ImageUpload';
-import MapLocationPicker from '@/components/MapLocationPicker';
-import { storeService } from '@/services/storeService';
+import ImageUpload from "@/components/ImageUpload";
+import LoadingSpinner from "@/components/LoadingSpinner";
+import MapLocationPicker from "@/components/MapLocationPicker";
+import ParticleBackground from "@/components/ParticleBackground";
+import { useAuth } from "@/contexts/AuthContext";
+import { storeService } from "@/services/storeService";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
 export default function CreateStorePage() {
   const router = useRouter();
   const { user, loading } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const [formData, setFormData] = useState({
-    name: '',
-    slug: '',
-    description: '',
-    logo_url: '',
-    banner_url: '',
-    address: '',
+    name: "",
+    slug: "",
+    description: "",
+    logo_url: "",
+    banner_url: "",
+    address: "",
     latitude: undefined as number | undefined,
     longitude: undefined as number | undefined,
-    phone: '',
-    email: '',
-    website: '',
+    phone: "",
+    email: "",
+    facebook_url: "",
+    instagram_url: "",
+    twitter_url: "",
+    tiktok_url: "",
   });
 
   // Redirect unauthenticated users
   if (!loading && !user) {
-    router.push('/login');
+    router.push("/login");
     return null;
   }
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
-  const handleImageChange = (field: 'logo_url' | 'banner_url') => (url: string) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: url
-    }));
-  };
+  const handleImageChange =
+    (field: "logo_url" | "banner_url") => (url: string) => {
+      setFormData((prev) => ({
+        ...prev,
+        [field]: url,
+      }));
+    };
 
-  const handleAddressChange = (address: string, latitude?: number, longitude?: number) => {
-    setFormData(prev => ({
+  const handleAddressChange = (
+    address: string,
+    latitude?: number,
+    longitude?: number
+  ) => {
+    setFormData((prev) => ({
       ...prev,
       address,
       latitude,
-      longitude
+      longitude,
     }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!user) {
-      setError('You must be logged in to create a store');
+      setError("You must be logged in to create a store");
       return;
     }
 
     try {
       setIsSubmitting(true);
-      setError('');
+      setError("");
 
       // Generate unique slug if not provided
       let finalSlug = formData.slug;
@@ -79,15 +89,15 @@ export default function CreateStorePage() {
         ...formData,
         slug: finalSlug,
         user_id: user.id,
-        is_active: true
+        is_active: true,
       };
 
       await storeService.createStore(storeData);
-      
+
       // Redirect to stores list
-      router.push('/dashboard/stores');
+      router.push("/dashboard/stores");
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to create store');
+      setError(err instanceof Error ? err.message : "Failed to create store");
     } finally {
       setIsSubmitting(false);
     }
@@ -100,17 +110,21 @@ export default function CreateStorePage() {
   return (
     <div className="min-h-screen relative overflow-hidden">
       <ParticleBackground />
-      
+
       <div className="relative z-10 min-h-screen p-4">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="flex justify-between items-center mb-8">
             <div>
-              <h1 className="text-3xl font-bold text-white mb-2">Create New Store</h1>
-              <p className="text-gray-300">Set up your restaurant or store catalog</p>
+              <h1 className="text-3xl font-bold text-white mb-2">
+                Create New Store
+              </h1>
+              <p className="text-gray-300">
+                Set up your restaurant or store catalog
+              </p>
             </div>
             <button
-              onClick={() => router.push('/dashboard/stores')}
+              onClick={() => router.push("/dashboard/stores")}
               className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition-colors"
             >
               Back to Stores
@@ -128,10 +142,15 @@ export default function CreateStorePage() {
           <form onSubmit={handleSubmit} className="space-y-8">
             {/* Basic Information */}
             <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-2xl border border-white/20">
-              <h3 className="text-lg font-semibold text-white mb-6">Basic Information</h3>
+              <h3 className="text-lg font-semibold text-white mb-6">
+                Basic Information
+              </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-white mb-2">
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium text-white mb-2"
+                  >
                     Store Name *
                   </label>
                   <input
@@ -147,11 +166,16 @@ export default function CreateStorePage() {
                 </div>
 
                 <div>
-                  <label htmlFor="slug" className="block text-sm font-medium text-white mb-2">
+                  <label
+                    htmlFor="slug"
+                    className="block text-sm font-medium text-white mb-2"
+                  >
                     URL Slug
                   </label>
                   <div className="relative">
-                    <span className="absolute left-4 top-3 text-gray-400">/store/</span>
+                    <span className="absolute left-4 top-3 text-gray-400">
+                      /store/
+                    </span>
                     <input
                       type="text"
                       id="slug"
@@ -162,11 +186,16 @@ export default function CreateStorePage() {
                       placeholder="store-slug"
                     />
                   </div>
-                  <p className="text-xs text-gray-400 mt-1">Leave empty to auto-generate from store name</p>
+                  <p className="text-xs text-gray-400 mt-1">
+                    Leave empty to auto-generate from store name
+                  </p>
                 </div>
 
                 <div className="md:col-span-2">
-                  <label htmlFor="description" className="block text-sm font-medium text-white mb-2">
+                  <label
+                    htmlFor="description"
+                    className="block text-sm font-medium text-white mb-2"
+                  >
                     Description
                   </label>
                   <textarea
@@ -188,7 +217,7 @@ export default function CreateStorePage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <ImageUpload
                   value={formData.logo_url}
-                  onChange={handleImageChange('logo_url')}
+                  onChange={handleImageChange("logo_url")}
                   label="Logo"
                   placeholder="https://example.com/logo.png"
                   bucketName="store_data"
@@ -198,7 +227,7 @@ export default function CreateStorePage() {
 
                 <ImageUpload
                   value={formData.banner_url}
-                  onChange={handleImageChange('banner_url')}
+                  onChange={handleImageChange("banner_url")}
                   label="Banner"
                   placeholder="https://example.com/banner.jpg"
                   bucketName="store_data"
@@ -210,8 +239,10 @@ export default function CreateStorePage() {
 
             {/* Contact Information */}
             <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-2xl border border-white/20">
-              <h3 className="text-lg font-semibold text-white mb-6">Contact Information</h3>
-              
+              <h3 className="text-lg font-semibold text-white mb-6">
+                Contact Information
+              </h3>
+
               {/* Address Section - Full Width */}
               <div className="mb-6">
                 <MapLocationPicker
@@ -225,7 +256,10 @@ export default function CreateStorePage() {
               {/* Other Contact Fields - Grid Layout */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-white mb-2">
+                  <label
+                    htmlFor="phone"
+                    className="block text-sm font-medium text-white mb-2"
+                  >
                     Phone Number
                   </label>
                   <input
@@ -240,7 +274,10 @@ export default function CreateStorePage() {
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-white mb-2">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-white mb-2"
+                  >
                     Email
                   </label>
                   <input
@@ -253,19 +290,84 @@ export default function CreateStorePage() {
                     placeholder="contact@store.com"
                   />
                 </div>
+              </div>
+            </div>
 
-                <div className="md:col-span-2">
-                  <label htmlFor="website" className="block text-sm font-medium text-white mb-2">
-                    Website
+            {/* Social Media Links */}
+            <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-2xl border border-white/20">
+              <h3 className="text-lg font-semibold text-white mb-6">
+                Social Media Links
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label
+                    htmlFor="facebook_url"
+                    className="block text-sm font-medium text-white mb-2"
+                  >
+                    Facebook
                   </label>
                   <input
                     type="url"
-                    id="website"
-                    name="website"
-                    value={formData.website}
+                    id="facebook_url"
+                    name="facebook_url"
+                    value={formData.facebook_url}
                     onChange={handleInputChange}
                     className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
-                    placeholder="https://store.com"
+                    placeholder="https://facebook.com/yourpage"
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="instagram_url"
+                    className="block text-sm font-medium text-white mb-2"
+                  >
+                    Instagram
+                  </label>
+                  <input
+                    type="url"
+                    id="instagram_url"
+                    name="instagram_url"
+                    value={formData.instagram_url}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                    placeholder="https://instagram.com/yourhandle"
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="twitter_url"
+                    className="block text-sm font-medium text-white mb-2"
+                  >
+                    Twitter/X
+                  </label>
+                  <input
+                    type="url"
+                    id="twitter_url"
+                    name="twitter_url"
+                    value={formData.twitter_url}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                    placeholder="https://twitter.com/yourhandle"
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="tiktok_url"
+                    className="block text-sm font-medium text-white mb-2"
+                  >
+                    TikTok
+                  </label>
+                  <input
+                    type="url"
+                    id="tiktok_url"
+                    name="tiktok_url"
+                    value={formData.tiktok_url}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                    placeholder="https://tiktok.com/@yourhandle"
                   />
                 </div>
               </div>
@@ -284,13 +386,13 @@ export default function CreateStorePage() {
                     Creating Store...
                   </div>
                 ) : (
-                  'Create Store'
+                  "Create Store"
                 )}
               </button>
-              
+
               <button
                 type="button"
-                onClick={() => router.push('/dashboard/stores')}
+                onClick={() => router.push("/dashboard/stores")}
                 className="px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors"
               >
                 Cancel

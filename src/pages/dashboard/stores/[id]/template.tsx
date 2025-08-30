@@ -1,5 +1,6 @@
 import LoadingSpinner from "@/components/LoadingSpinner";
 import ParticleBackground from "@/components/ParticleBackground";
+import Snackbar from "@/components/Snackbar";
 import { useAuth } from "@/contexts/AuthContext";
 import { storeService } from "@/services/storeService";
 import { templateService } from "@/services/templateService";
@@ -23,6 +24,11 @@ export default function TemplateSelectionPage() {
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
   const [isApplying, setIsApplying] = useState(false);
   const [error, setError] = useState("");
+  const [snackbar, setSnackbar] = useState({
+    isOpen: false,
+    message: "",
+    type: "success" as "success" | "error" | "info",
+  });
 
   // Redirect unauthenticated users
   useEffect(() => {
@@ -83,7 +89,7 @@ export default function TemplateSelectionPage() {
           setSelectedTemplate(storeTemplate.template.id);
         }
       } catch (err) {
-        console.log("No template currently applied to this store", err);
+        console.error("No template currently applied to this store", err);
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load store");
@@ -113,13 +119,25 @@ export default function TemplateSelectionPage() {
       // Apply template to store using the service
       await templateService.applyTemplateToStore(store.id, selectedTemplate);
 
-      // Show success message
-      alert(`Template applied successfully!`);
+      // Show success message with snackbar
+      setSnackbar({
+        isOpen: true,
+        message: "Template applied successfully!",
+        type: "success",
+      });
 
-      // Redirect back to stores list
-      router.push("/dashboard/stores");
+      // Redirect back to stores list after a short delay
+      setTimeout(() => {
+        router.push("/dashboard/stores");
+      }, 1500);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to apply template");
+      setSnackbar({
+        isOpen: true,
+        message:
+          err instanceof Error ? err.message : "Failed to apply template",
+        type: "error",
+      });
     } finally {
       setIsApplying(false);
     }
@@ -154,6 +172,14 @@ export default function TemplateSelectionPage() {
   return (
     <div className="min-h-screen relative overflow-hidden">
       <ParticleBackground />
+
+      {/* Snackbar */}
+      <Snackbar
+        isOpen={snackbar.isOpen}
+        message={snackbar.message}
+        type={snackbar.type}
+        onClose={() => setSnackbar({ ...snackbar, isOpen: false })}
+      />
 
       <div className="relative z-10 min-h-screen p-4">
         <div className="max-w-7xl mx-auto">
@@ -233,7 +259,7 @@ export default function TemplateSelectionPage() {
                     )}
 
                     {/* Current Template Overlay */}
-                    {isCurrentTemplate && (
+                    {/* {isCurrentTemplate && (
                       <div className="absolute inset-0 bg-green-500/20 border-2 border-green-400 flex items-center justify-center">
                         <div className="text-center">
                           <div className="text-green-400 font-bold text-lg mb-1">
@@ -244,7 +270,7 @@ export default function TemplateSelectionPage() {
                           </div>
                         </div>
                       </div>
-                    )}
+                    )} */}
                   </div>
 
                   {/* Template Info */}
@@ -286,7 +312,7 @@ export default function TemplateSelectionPage() {
                   </div>
 
                   {/* Category Badge */}
-                  <div className="flex justify-between items-center">
+                  <div className="flex justify-start items-center gap-2">
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                       {template.category}
                     </span>
@@ -294,17 +320,30 @@ export default function TemplateSelectionPage() {
                       {template.is_featured &&
                         !template.coming_soon &&
                         !isCurrentTemplate && (
-                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
                             Featured
                           </span>
                         )}
                       {template.coming_soon && (
-                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
                           Coming Soon
                         </span>
                       )}
                       {isCurrentTemplate && (
-                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                          <svg
+                            className="w-4 h-4 text-green-400"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M5 13l4 4L19 7"
+                            />
+                          </svg>
                           Active
                         </span>
                       )}
@@ -312,7 +351,7 @@ export default function TemplateSelectionPage() {
                         !template.coming_soon &&
                         !isCurrentTemplate && (
                           <svg
-                            className="w-6 h-6 text-purple-400"
+                            className="w-6 h-6 text-green-400"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"

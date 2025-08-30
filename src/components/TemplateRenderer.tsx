@@ -36,7 +36,6 @@ const TemplateRenderer: React.FC<TemplateRendererProps> = ({
         setSelectedTemplate(storeTemplate.template);
       } else {
         // Use default template if no template is selected
-        console.log("No template found for store, using default template");
         setSelectedTemplate({
           id: "default",
           name: "Default",
@@ -48,6 +47,7 @@ const TemplateRenderer: React.FC<TemplateRendererProps> = ({
           sort_order: 0,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
+          features: [],
         });
       }
     } catch (err) {
@@ -64,6 +64,7 @@ const TemplateRenderer: React.FC<TemplateRendererProps> = ({
         sort_order: 0,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
+        features: [],
       });
     } finally {
       setIsLoading(false);
@@ -99,24 +100,34 @@ const TemplateRenderer: React.FC<TemplateRendererProps> = ({
   );
 
   // Get the actual template component
-  const TemplateComponent = getTemplateComponent(templateComponentId);
+  let TemplateComponent = getTemplateComponent(templateComponentId);
 
+  // If template component is not found, fallback to default template
   if (!TemplateComponent) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            Template Not Found
-          </h2>
-          <p className="text-gray-600 mb-4">
-            Template &quot;{selectedTemplate.name}&quot; is not available.
-          </p>
-          <p className="text-sm text-gray-500">
-            Template ID: {templateComponentId}
-          </p>
-        </div>
-      </div>
+    console.warn(
+      `Template component "${templateComponentId}" not found, falling back to default template`
     );
+    TemplateComponent = getTemplateComponent("default");
+
+    // If default template is also not found, show error
+    if (!TemplateComponent) {
+      return (
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">
+              Template Not Found
+            </h2>
+            <p className="text-gray-600 mb-4">
+              Template &quot;{selectedTemplate.name}&quot; is not available and
+              default template is missing.
+            </p>
+            <p className="text-sm text-gray-500">
+              Template ID: {templateComponentId}
+            </p>
+          </div>
+        </div>
+      );
+    }
   }
 
   // Render the template with store data

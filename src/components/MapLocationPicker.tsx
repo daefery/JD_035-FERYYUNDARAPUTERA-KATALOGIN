@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect, useRef } from 'react';
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
+import { useEffect, useRef, useState } from "react";
 
 interface MapLocationPickerProps {
   value: string;
@@ -18,7 +18,14 @@ interface Location {
 }
 
 // Dynamically import Mapbox to avoid SSR issues
-const MapLocationPickerComponent = ({ value, onChange, label, placeholder, initialLatitude, initialLongitude }: MapLocationPickerProps) => {
+const MapLocationPickerComponent = ({
+  value,
+  onChange,
+  label,
+  placeholder,
+  initialLatitude,
+  initialLongitude,
+}: MapLocationPickerProps) => {
   const [location, setLocation] = useState<Location | null>(null);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -36,29 +43,19 @@ const MapLocationPickerComponent = ({ value, onChange, label, placeholder, initi
   useEffect(() => {
     const loadMapbox = async () => {
       try {
-        console.log('Loading Mapbox...');
-        const mapboxModule = await import('mapbox-gl');
-        console.log('Mapbox module loaded successfully');
+        const mapboxModule = await import("mapbox-gl");
         setMapboxgl(mapboxModule.default);
-        
         const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
-        console.log('Mapbox token check:', {
-          hasToken: !!mapboxToken,
-          tokenLength: mapboxToken?.length || 0,
-          tokenPreview: mapboxToken ? `${mapboxToken.substring(0, 10)}...` : 'NOT SET'
-        });
-        
+
         if (!mapboxToken) {
-          console.error('Mapbox token not found');
+          console.error("Mapbox token not found");
           return;
         }
 
         mapboxModule.default.accessToken = mapboxToken;
-        console.log('Mapbox access token set successfully');
         setIsMapLoaded(true);
-        console.log('Mapbox initialization completed');
       } catch (error) {
-        console.error('Failed to load Mapbox:', error);
+        console.error("Failed to load Mapbox:", error);
       }
     };
 
@@ -67,24 +64,22 @@ const MapLocationPickerComponent = ({ value, onChange, label, placeholder, initi
 
   // Get current location on component mount (only if no initial coordinates)
   useEffect(() => {
-    if (!hasRequestedLocation && navigator.geolocation && !value && !initialLatitude && !initialLongitude) {
+    if (
+      !hasRequestedLocation &&
+      navigator.geolocation &&
+      !value &&
+      !initialLatitude &&
+      !initialLongitude
+    ) {
       setHasRequestedLocation(true);
       getCurrentLocation();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasRequestedLocation, value, initialLatitude, initialLongitude]);
 
   // Initialize map when Mapbox is loaded
   useEffect(() => {
-    console.log('Map initialization effect triggered:', {
-      isMapLoaded,
-      hasMapRef: !!mapRef.current,
-      hasMapboxgl: !!mapboxgl,
-      hasInitialized: hasInitializedRef.current
-    });
-
     if (!isMapLoaded || !mapRef.current || !mapboxgl) {
-      console.log('Map initialization skipped - missing dependencies');
       return;
     }
 
@@ -95,14 +90,11 @@ const MapLocationPickerComponent = ({ value, onChange, label, placeholder, initi
     if (initialLatitudeRef.current && initialLongitudeRef.current) {
       initialCenter = [initialLongitudeRef.current, initialLatitudeRef.current];
       initialZoom = 15;
-      console.log('Using initial coordinates:', { lat: initialLatitudeRef.current, lng: initialLongitudeRef.current });
     }
-
-    console.log('Creating map with center:', initialCenter, 'zoom:', initialZoom);
 
     const map = new mapboxgl.Map({
       container: mapRef.current,
-      style: 'mapbox://styles/mapbox/streets-v12',
+      style: "mapbox://styles/mapbox/streets-v12",
       center: initialCenter,
       zoom: initialZoom,
       attributionControl: false,
@@ -111,41 +103,45 @@ const MapLocationPickerComponent = ({ value, onChange, label, placeholder, initi
     mapInstanceRef.current = map;
 
     // Wait for map to load before adding interactions
-    map.on('load', () => {
-      console.log('Map loaded successfully');
-      
+    map.on("load", () => {
       // Add navigation controls
-      map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+      map.addControl(new mapboxgl.NavigationControl(), "top-right");
+      map.addControl(new mapboxgl.FullscreenControl());
 
       // Add click listener to map
-      map.on('click', (event: any) => {
+      map.on("click", (event: any) => {
         // Don't handle clicks if we're currently dragging
         if (isDraggingRef.current) {
           return;
         }
 
         const { lng, lat } = event.lngLat;
-        console.log('Map clicked at:', { lng, lat });
-        
+
         // Immediately place a marker for visual feedback
         placeMarker(lng, lat);
-        
+
         // Then get the address - pass lat, lng in correct order
         reverseGeocode(lat, lng);
       });
 
       // Handle initial coordinates or existing address (only if not already initialized)
       if (!hasInitializedRef.current) {
-        console.log('Handling initial setup');
         if (initialLatitudeRef.current && initialLongitudeRef.current) {
           // Place marker at initial coordinates
           placeMarker(initialLongitudeRef.current, initialLatitudeRef.current);
-          
+
           // If we have an address, use it; otherwise geocode the coordinates
           if (value) {
-            setLocation({ lat: initialLatitudeRef.current, lng: initialLongitudeRef.current, address: value });
+            setLocation({
+              lat: initialLatitudeRef.current,
+              lng: initialLongitudeRef.current,
+              address: value,
+            });
           } else {
-            reverseGeocode(initialLatitudeRef.current, initialLongitudeRef.current);
+            reverseGeocode(
+              initialLatitudeRef.current,
+              initialLongitudeRef.current
+            );
           }
         } else if (value && !location) {
           // Try to geocode the current value if it exists
@@ -154,7 +150,6 @@ const MapLocationPickerComponent = ({ value, onChange, label, placeholder, initi
 
         // Mark map as initialized
         hasInitializedRef.current = true;
-        console.log('Map initialization completed');
       }
     });
 
@@ -163,23 +158,28 @@ const MapLocationPickerComponent = ({ value, onChange, label, placeholder, initi
         mapInstanceRef.current.remove();
       }
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMapLoaded, mapboxgl]); // Removed initialLatitude and initialLongitude from dependencies
 
   // Handle value changes without re-initializing the map
   useEffect(() => {
-    if (value && !location && hasInitializedRef.current && mapInstanceRef.current) {
+    if (
+      value &&
+      !location &&
+      hasInitializedRef.current &&
+      mapInstanceRef.current
+    ) {
       // If we have a value but no location, try to geocode it
       geocodeAddress(value);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, location]);
 
   const placeMarker = (lng: number, lat: number) => {
     try {
       // Check if mapboxgl is loaded
       if (!mapboxgl || !mapInstanceRef.current) {
-        console.warn('Mapbox not loaded yet, cannot place marker');
+        console.warn("Mapbox not loaded yet, cannot place marker");
         return;
       }
 
@@ -187,11 +187,11 @@ const MapLocationPickerComponent = ({ value, onChange, label, placeholder, initi
       if (markerRef.current) {
         markerRef.current.remove();
       }
-      
+
       // Create new marker
-      const marker = new mapboxgl.Marker({ 
+      const marker = new mapboxgl.Marker({
         draggable: true,
-        color: '#8b5cf6' // Purple color to match theme
+        color: "#8b5cf6", // Purple color to match theme
       })
         .setLngLat([lng, lat])
         .addTo(mapInstanceRef.current!);
@@ -199,40 +199,47 @@ const MapLocationPickerComponent = ({ value, onChange, label, placeholder, initi
       markerRef.current = marker;
 
       // Add drag listeners to marker
-      marker.on('dragstart', () => {
+      marker.on("dragstart", () => {
         isDraggingRef.current = true;
-        console.log('Marker drag started');
       });
 
-      marker.on('dragend', () => {
+      marker.on("dragend", () => {
         isDraggingRef.current = false;
         const markerLngLat = marker.getLngLat();
-        console.log('Marker dragged to:', markerLngLat);
-        
+
         // Update location state without recreating the marker
-        const newLocation = { lat: markerLngLat.lat, lng: markerLngLat.lng, address: '' };
+        const newLocation = {
+          lat: markerLngLat.lat,
+          lng: markerLngLat.lng,
+          address: "",
+        };
         setLocation(newLocation);
-        
+
         // Get the address for the new position
         reverseGeocode(markerLngLat.lat, markerLngLat.lng);
       });
-
-      console.log('Marker placed at:', { lat, lng });
     } catch (error) {
-      console.error('Failed to place marker:', error);
+      console.error("Failed to place marker:", error);
     }
   };
 
   const reverseGeocode = async (lat: number, lng: number) => {
     // Check if mapboxgl is loaded before proceeding
     if (!mapboxgl) {
-      console.warn('Mapbox not loaded yet, cannot geocode');
+      console.warn("Mapbox not loaded yet, cannot geocode");
       return;
     }
 
     // Validate coordinates
-    if (isNaN(lat) || isNaN(lng) || lat < -90 || lat > 90 || lng < -180 || lng > 180) {
-      console.error('Invalid coordinates:', { lat, lng });
+    if (
+      isNaN(lat) ||
+      isNaN(lng) ||
+      lat < -90 ||
+      lat > 90 ||
+      lng < -180 ||
+      lng > 180
+    ) {
+      console.error("Invalid coordinates:", { lat, lng });
       const fallbackAddress = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
       const newLocation = { lat, lng, address: fallbackAddress };
       setLocation(newLocation);
@@ -241,20 +248,12 @@ const MapLocationPickerComponent = ({ value, onChange, label, placeholder, initi
     }
 
     setIsLoading(true);
-    
+
     try {
       const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
-      
-      // Debug logging
-      console.log('Geocoding attempt:', {
-        lat: lat.toFixed(6),
-        lng: lng.toFixed(6),
-        hasToken: !!mapboxToken,
-        tokenLength: mapboxToken?.length || 0
-      });
-      
+
       if (!mapboxToken) {
-        console.error('Mapbox token not found');
+        console.error("Mapbox token not found");
         const fallbackAddress = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
         const newLocation = { lat, lng, address: fallbackAddress };
         setLocation(newLocation);
@@ -268,33 +267,27 @@ const MapLocationPickerComponent = ({ value, onChange, label, placeholder, initi
 
       // Try multiple geocoding approaches to get a better address
       const geocodingUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${formattedLng},${formattedLat}.json?access_token=${mapboxToken}&types=poi,address,place&limit=5`;
-      
-      console.log('Geocoding URL:', geocodingUrl.replace(mapboxToken, '***TOKEN***'));
-      
       const response = await fetch(geocodingUrl);
-      
+
       if (!response.ok) {
-        console.error('Geocoding API error:', response.status, response.statusText);
-        
+        console.error(
+          "Geocoding API error:",
+          response.status,
+          response.statusText
+        );
+
         // Log response details for debugging
         try {
           const errorText = await response.text();
-          console.error('Error response:', errorText);
+          console.error("Error response:", errorText);
         } catch (e) {
-          console.error('Could not read error response', e);
+          console.error("Could not read error response", e);
         }
-        
-        // Test if token is valid with a known coordinate
-        const testUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/-74.006,40.7128.json?access_token=${mapboxToken}&limit=1`;
-        const testResponse = await fetch(testUrl);
-        console.log('Token test result:', testResponse.status, testResponse.ok ? 'VALID' : 'INVALID');
-        
+
         // Try a simpler geocoding request as fallback
         const fallbackUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${formattedLng},${formattedLat}.json?access_token=${mapboxToken}&limit=1`;
-        console.log('Trying fallback URL:', fallbackUrl.replace(mapboxToken, '***TOKEN***'));
-        
         const fallbackResponse = await fetch(fallbackUrl);
-        
+
         if (fallbackResponse.ok) {
           const fallbackData = await fallbackResponse.json();
           if (fallbackData.features && fallbackData.features.length > 0) {
@@ -302,57 +295,57 @@ const MapLocationPickerComponent = ({ value, onChange, label, placeholder, initi
             const newLocation = { lat, lng, address };
             setLocation(newLocation);
             onChange(address, lat, lng);
-            console.log('Fallback address found:', address);
             return;
           }
         } else {
-          console.error('Fallback geocoding also failed:', fallbackResponse.status);
+          console.error(
+            "Fallback geocoding also failed:",
+            fallbackResponse.status
+          );
         }
-        
+
         // If all geocoding fails, use coordinates
         const fallbackAddress = `${formattedLat}, ${formattedLng}`;
         const newLocation = { lat, lng, address: fallbackAddress };
         setLocation(newLocation);
         onChange(fallbackAddress, lat, lng);
-        console.warn('Geocoding failed, using coordinates');
+        console.warn("Geocoding failed, using coordinates");
         return;
       }
-      
+
       const data = await response.json();
-      console.log('Geocoding response:', data);
-      
+
       if (data.features && data.features.length > 0) {
         // Try to get the best address from the results
-        let bestAddress = '';
-        
+        let bestAddress = "";
+
         // Look for a good address result
         for (const feature of data.features) {
-          if (feature.place_type && feature.place_type.includes('address')) {
+          if (feature.place_type && feature.place_type.includes("address")) {
             bestAddress = feature.place_name;
             break;
           }
         }
-        
+
         // If no address found, use the first result
         if (!bestAddress && data.features[0]) {
           bestAddress = data.features[0].place_name;
         }
-        
+
         if (bestAddress) {
           const newLocation = { lat, lng, address: bestAddress };
           setLocation(newLocation);
           onChange(bestAddress, lat, lng);
-          console.log('Address found:', bestAddress);
         } else {
           // Fallback to coordinates if no address found
           const fallbackAddress = `${formattedLat}, ${formattedLng}`;
           const newLocation = { lat, lng, address: fallbackAddress };
           setLocation(newLocation);
           onChange(fallbackAddress, lat, lng);
-          console.warn('No address found, using coordinates');
+          console.warn("No address found, using coordinates");
         }
       } else {
-        console.warn('No geocoding results found for:', { lat, lng });
+        console.warn("No geocoding results found for:", { lat, lng });
         // Fallback to coordinates
         const fallbackAddress = `${formattedLat}, ${formattedLng}`;
         const newLocation = { lat, lng, address: fallbackAddress };
@@ -360,7 +353,7 @@ const MapLocationPickerComponent = ({ value, onChange, label, placeholder, initi
         onChange(fallbackAddress, lat, lng);
       }
     } catch (error) {
-      console.error('Reverse geocoding failed:', error);
+      console.error("Reverse geocoding failed:", error);
       // Fallback to coordinates
       const fallbackAddress = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
       const newLocation = { lat, lng, address: fallbackAddress };
@@ -374,39 +367,41 @@ const MapLocationPickerComponent = ({ value, onChange, label, placeholder, initi
   const geocodeAddress = async (address: string) => {
     // Check if mapboxgl is loaded before proceeding
     if (!mapboxgl) {
-      console.warn('Mapbox not loaded yet, cannot geocode address');
+      console.warn("Mapbox not loaded yet, cannot geocode address");
       return;
     }
 
     setIsLoading(true);
-    
+
     try {
       const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
       const response = await fetch(
-        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?access_token=${mapboxToken}&types=poi,address`
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
+          address
+        )}.json?access_token=${mapboxToken}&types=poi,address`
       );
-      
+
       const data = await response.json();
-      
+
       if (data.features && data.features.length > 0) {
         const [lng, lat] = data.features[0].center;
         const newLocation = { lat, lng, address };
-        
+
         setLocation(newLocation);
-        
+
         // Update map center
         if (mapInstanceRef.current) {
           mapInstanceRef.current.flyTo({
             center: [lng, lat],
-            zoom: 15
+            zoom: 15,
           });
         }
-        
+
         // Place marker at the geocoded location
         placeMarker(lng, lat);
       }
     } catch (error) {
-      console.error('Geocoding failed:', error);
+      console.error("Geocoding failed:", error);
     } finally {
       setIsLoading(false);
     }
@@ -415,7 +410,7 @@ const MapLocationPickerComponent = ({ value, onChange, label, placeholder, initi
   const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const address = e.target.value;
     onChange(address);
-    
+
     // Geocode the address after a delay
     if (address.trim()) {
       setTimeout(() => {
@@ -426,63 +421,63 @@ const MapLocationPickerComponent = ({ value, onChange, label, placeholder, initi
 
   const openInGoogleMaps = () => {
     if (location) {
-      const url = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(location.address)}`;
-      window.open(url, '_blank');
+      const url = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+        location.address
+      )}`;
+      window.open(url, "_blank");
     }
   };
 
   const getCurrentLocation = () => {
     if (navigator.geolocation) {
       setIsLoading(true);
-      
+
       // Set a timeout to clear loading state if geolocation takes too long
       const timeoutId = setTimeout(() => {
-        console.warn('Geolocation timeout - clearing loading state');
+        console.warn("Geolocation timeout - clearing loading state");
         setIsLoading(false);
       }, 12000); // 12 seconds timeout (slightly longer than geolocation timeout)
-      
+
       navigator.geolocation.getCurrentPosition(
         (position) => {
           clearTimeout(timeoutId); // Clear the timeout
           const { latitude, longitude } = position.coords;
-          
+
           // Update map center to current location
           if (mapInstanceRef.current) {
             mapInstanceRef.current.flyTo({
               center: [longitude, latitude],
-              zoom: 15
+              zoom: 15,
             });
           }
-          
+
           // Place marker and get address
           placeMarker(longitude, latitude);
           reverseGeocode(latitude, longitude);
-          
+
           // Clear loading state after successful geolocation
           setIsLoading(false);
         },
         (error) => {
           clearTimeout(timeoutId); // Clear the timeout
-          console.error('Geolocation failed:', error);
+          console.error("Geolocation failed:", error);
           setIsLoading(false);
         },
         {
           enableHighAccuracy: true,
           timeout: 10000,
-          maximumAge: 300000 // 5 minutes
+          maximumAge: 300000, // 5 minutes
         }
       );
     } else {
-      console.error('Geolocation not supported');
+      console.error("Geolocation not supported");
       setIsLoading(false);
     }
   };
 
   return (
     <div className="space-y-3">
-      <label className="block text-sm font-medium text-white">
-        {label}
-      </label>
+      <label className="block text-sm font-medium text-white">{label}</label>
 
       {/* Address Input */}
       <div className="relative">
@@ -509,9 +504,9 @@ const MapLocationPickerComponent = ({ value, onChange, label, placeholder, initi
         <div
           ref={mapRef}
           className="w-full h-48 rounded-lg border border-white/20"
-          style={{ minHeight: '192px' }}
+          style={{ minHeight: "192px" }}
         />
-        
+
         {!isMapLoaded && (
           <div className="absolute inset-0 flex items-center justify-center bg-gray-800 rounded-lg">
             <div className="text-center">

@@ -1,6 +1,6 @@
-import React from 'react';
-import Image from 'next/image';
-import { Store, Category, MenuItem } from '@/types/database';
+import { Category, MenuItem, Store } from "@/types/database";
+import Image from "next/image";
+import React from "react";
 
 interface DefaultTemplateProps {
   store: Store;
@@ -11,12 +11,12 @@ interface DefaultTemplateProps {
 const DefaultTemplate: React.FC<DefaultTemplateProps> = ({
   store,
   categories,
-  menuItems
+  menuItems,
 }) => {
   // Group menu items by category
-  const menuByCategory = categories.map(category => ({
+  const menuByCategory = categories.map((category) => ({
     ...category,
-    items: menuItems.filter(item => item.category_id === category.id)
+    items: menuItems.filter((item) => item.category_id === category.id),
   }));
 
   return (
@@ -36,13 +36,17 @@ const DefaultTemplate: React.FC<DefaultTemplateProps> = ({
                 />
               </div>
             )}
-            
+
             <div className="flex-1">
-              <h1 className="text-4xl font-bold text-white mb-2">{store.name}</h1>
+              <h1 className="text-4xl font-bold text-white mb-2">
+                {store.name}
+              </h1>
               {store.description && (
-                <p className="text-gray-300 text-lg mb-4">{store.description}</p>
+                <p className="text-gray-300 text-lg mb-4">
+                  {store.description}
+                </p>
               )}
-              
+
               {/* Contact Info */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                 {store.address && (
@@ -61,19 +65,6 @@ const DefaultTemplate: React.FC<DefaultTemplateProps> = ({
                   <div className="flex items-center text-gray-300">
                     <span className="mr-2">✉️</span>
                     {store.email}
-                  </div>
-                )}
-                {store.website && (
-                  <div className="flex items-center text-gray-300">
-                    <span className="mr-2">🌐</span>
-                    <a 
-                      href={store.website} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-blue-300 hover:text-blue-200 transition-colors"
-                    >
-                      {store.website}
-                    </a>
                   </div>
                 )}
               </div>
@@ -98,12 +89,17 @@ const DefaultTemplate: React.FC<DefaultTemplateProps> = ({
         {menuByCategory.length > 0 ? (
           <div className="space-y-8">
             {menuByCategory.map((category) => (
-              <div key={category.id} className="bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl p-8">
-                <h2 className="text-2xl font-bold text-white mb-6">{category.name}</h2>
+              <div
+                key={category.id}
+                className="bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl p-8"
+              >
+                <h2 className="text-2xl font-bold text-white mb-6">
+                  {category.name}
+                </h2>
                 {category.description && (
                   <p className="text-gray-300 mb-6">{category.description}</p>
                 )}
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {category.items.map((item) => (
                     <div
@@ -121,23 +117,31 @@ const DefaultTemplate: React.FC<DefaultTemplateProps> = ({
                           />
                         </div>
                       )}
-                      
+
                       <div className="flex justify-between items-start mb-2">
-                        <h3 className="text-lg font-semibold text-white">{item.name}</h3>
-                        <span className="text-yellow-400 font-bold">${item.price.toLocaleString()}</span>
+                        <h3 className="text-lg font-semibold text-white">
+                          {item.name}
+                        </h3>
+                        <span className="text-yellow-400 font-bold">
+                          ${item.price.toLocaleString()}
+                        </span>
                       </div>
-                      
+
                       {item.description && (
-                        <p className="text-gray-300 text-sm mb-3">{item.description}</p>
+                        <p className="text-gray-300 text-sm mb-3">
+                          {item.description}
+                        </p>
                       )}
-                      
+
                       <div className="flex justify-between items-center">
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          item.is_available
-                            ? 'bg-green-100 text-green-800'
-                            : 'bg-red-100 text-red-800'
-                        }`}>
-                          {item.is_available ? 'Available' : 'Unavailable'}
+                        <span
+                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                            item.is_available
+                              ? "bg-green-100 text-green-800"
+                              : "bg-red-100 text-red-800"
+                          }`}
+                        >
+                          {item.is_available ? "Available" : "Unavailable"}
                         </span>
                       </div>
                     </div>

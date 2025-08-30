@@ -11,7 +11,10 @@ export interface Store {
   longitude?: number;
   phone?: string;
   email?: string;
-  website?: string;
+  facebook_url?: string;
+  instagram_url?: string;
+  twitter_url?: string;
+  tiktok_url?: string;
   is_active: boolean;
   created_at: string;
   updated_at: string;
@@ -28,7 +31,10 @@ export interface CreateStoreData {
   longitude?: number;
   phone?: string;
   email?: string;
-  website?: string;
+  facebook_url?: string;
+  instagram_url?: string;
+  twitter_url?: string;
+  tiktok_url?: string;
   is_active?: boolean;
 }
 
@@ -43,7 +49,10 @@ export interface UpdateStoreData {
   longitude?: number;
   phone?: string;
   email?: string;
-  website?: string;
+  facebook_url?: string;
+  instagram_url?: string;
+  twitter_url?: string;
+  tiktok_url?: string;
   is_active?: boolean;
 }
 
@@ -87,6 +96,10 @@ export interface MenuItem {
   updated_at: string;
 }
 
+export interface MenuItemWithCategory extends MenuItem {
+  category?: Category;
+}
+
 export interface CreateMenuItemData {
   store_id: string;
   name: string;
@@ -111,6 +124,7 @@ export interface UpdateMenuItemData {
 }
 
 export interface Template {
+  features: TemplateFeature[];
   id: string;
   name: string;
   description: string;

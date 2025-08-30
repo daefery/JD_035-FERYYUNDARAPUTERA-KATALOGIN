@@ -16,6 +16,10 @@ CREATE TABLE stores (
   phone TEXT,
   email TEXT,
   website TEXT,
+  facebook_url TEXT,             -- Facebook page/profile URL
+  instagram_url TEXT,            -- Instagram profile URL
+  twitter_url TEXT,              -- Twitter/X profile URL
+  tiktok_url TEXT,               -- TikTok profile URL
   is_active BOOLEAN DEFAULT true,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
