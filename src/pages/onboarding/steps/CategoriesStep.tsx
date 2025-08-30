@@ -39,26 +39,30 @@ const CategoriesStep: React.FC<OnboardingStepProps> = ({
           <div>
             <h4 className="font-medium text-white mb-3">Your Categories:</h4>
             <div className="space-y-2">
-              {data.categories.map((cat: any) => (
-                <div
-                  key={cat.id}
-                  className="flex items-center justify-between p-3 bg-white/10 rounded-lg border border-white/20"
-                >
-                  <div>
-                    <p className="font-medium text-white">{cat.name}</p>
-                    {cat.description && (
-                      <p className="text-sm text-gray-300">{cat.description}</p>
-                    )}
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => removeCategory(cat.id)}
-                    className="text-red-400 hover:text-red-300"
+              {data.categories.map(
+                (cat: { id: string; name: string; description?: string }) => (
+                  <div
+                    key={cat.id}
+                    className="flex items-center justify-between p-3 bg-white/10 rounded-lg border border-white/20"
                   >
-                    Remove
-                  </button>
-                </div>
-              ))}
+                    <div>
+                      <p className="font-medium text-white">{cat.name}</p>
+                      {cat.description && (
+                        <p className="text-sm text-gray-300">
+                          {cat.description}
+                        </p>
+                      )}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => removeCategory(cat.id)}
+                      className="text-red-400 hover:text-red-300"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                )
+              )}
             </div>
           </div>
         )}

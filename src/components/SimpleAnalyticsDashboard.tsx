@@ -2,6 +2,7 @@ import { analyticsService } from "@/services/analyticsService";
 import { AnalyticsPeriod, AnalyticsSummary } from "@/types/analytics";
 import React, { useEffect, useState } from "react";
 import SimpleAnalyticsChart from "./SimpleAnalyticsChart";
+import { BarChartIcon, EyeIcon, ThumbsUpIcon, TrendingUpIcon } from "./icons";
 
 interface SimpleAnalyticsDashboardProps {
   storeId?: string;
@@ -210,25 +211,7 @@ const SimpleAnalyticsDashboard: React.FC<SimpleAnalyticsDashboardProps> = ({
                 <p className="text-sm mt-1 text-slate-400">Unique visitors</p>
               </div>
               <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center">
-                <svg
-                  className="w-6 h-6 text-blue-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                  />
-                </svg>
+                <EyeIcon className="w-6 h-6 text-blue-400" />
               </div>
             </div>
           </div>
@@ -243,19 +226,7 @@ const SimpleAnalyticsDashboard: React.FC<SimpleAnalyticsDashboardProps> = ({
                 <p className="text-sm mt-1 text-slate-400">Total views</p>
               </div>
               <div className="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center">
-                <svg
-                  className="w-6 h-6 text-green-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                  />
-                </svg>
+                <BarChartIcon className="w-6 h-6 text-green-400" />
               </div>
             </div>
           </div>
@@ -272,19 +243,7 @@ const SimpleAnalyticsDashboard: React.FC<SimpleAnalyticsDashboardProps> = ({
                 <p className="text-sm mt-1 text-slate-400">User engagement</p>
               </div>
               <div className="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center">
-                <svg
-                  className="w-6 h-6 text-purple-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11"
-                  />
-                </svg>
+                <ThumbsUpIcon className="w-6 h-6 text-purple-400" />
               </div>
             </div>
           </div>
@@ -303,19 +262,7 @@ const SimpleAnalyticsDashboard: React.FC<SimpleAnalyticsDashboardProps> = ({
                 </p>
               </div>
               <div className="w-12 h-12 bg-orange-500/20 rounded-lg flex items-center justify-center">
-                <svg
-                  className="w-6 h-6 text-orange-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-                  />
-                </svg>
+                <TrendingUpIcon className="w-6 h-6 text-orange-400" />
               </div>
             </div>
           </div>

@@ -55,7 +55,7 @@ export interface UserInteraction {
     | "menu_item_click"
     | "category_click";
   interaction_target: string;
-  interaction_data?: Record<string, any>;
+  interaction_data?: Record<string, unknown>;
   interaction_time: string;
   created_at: string;
 }

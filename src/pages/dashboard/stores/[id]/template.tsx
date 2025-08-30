@@ -1,3 +1,4 @@
+import { CheckIcon } from "@/components/icons";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import ParticleBackground from "@/components/ParticleBackground";
 import Snackbar from "@/components/Snackbar";
@@ -288,19 +289,7 @@ export default function TemplateSelectionPage() {
                         key={index}
                         className="flex items-center text-sm text-gray-300"
                       >
-                        <svg
-                          className="w-4 h-4 mr-2 text-green-400"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M5 13l4 4L19 7"
-                          />
-                        </svg>
+                        <CheckIcon className="w-4 h-4 mr-2 text-green-400" />
                         {feature.feature_name}
                       </div>
                     ))}
@@ -331,38 +320,14 @@ export default function TemplateSelectionPage() {
                       )}
                       {isCurrentTemplate && (
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                          <svg
-                            className="w-4 h-4 text-green-400"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M5 13l4 4L19 7"
-                            />
-                          </svg>
+                          <CheckIcon className="w-4 h-4 text-green-400" />
                           Active
                         </span>
                       )}
                       {isSelected &&
                         !template.coming_soon &&
                         !isCurrentTemplate && (
-                          <svg
-                            className="w-6 h-6 text-green-400"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M5 13l4 4L19 7"
-                            />
-                          </svg>
+                          <CheckIcon className="w-6 h-6 text-green-400" />
                         )}
                     </div>
                   </div>

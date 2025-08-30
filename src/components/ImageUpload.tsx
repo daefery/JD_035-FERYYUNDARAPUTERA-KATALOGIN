@@ -1,14 +1,15 @@
-import { useState, useRef } from 'react';
-import { supabase } from '@/lib/supabase';
-import { useAuth } from '@/contexts/AuthContext';
-import Image from 'next/image';
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/lib/supabase";
+import Image from "next/image";
+import { useRef, useState } from "react";
+import { CloudUploadIcon } from "./icons";
 
 interface ImageUploadProps {
   value: string;
   onChange: (url: string) => void;
   label: string;
   placeholder?: string;
-  bucketName: 'store_data' | 'gallery';
+  bucketName: "store_data" | "gallery";
   folder?: string;
   accept?: string;
   maxSize?: number; // in MB
@@ -20,9 +21,9 @@ export default function ImageUpload({
   label,
   placeholder = "https://example.com/image.jpg",
   bucketName,
-  folder = '',
+  folder = "",
   accept = "image/*",
-  maxSize = 5 // 5MB default
+  maxSize = 5, // 5MB default
 }: ImageUploadProps) {
   const { user } = useAuth();
   const [isUploading, setIsUploading] = useState(false);
@@ -30,7 +31,9 @@ export default function ImageUpload({
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
@@ -41,8 +44,8 @@ export default function ImageUpload({
     }
 
     // Validate file type
-    if (!file.type.startsWith('image/')) {
-      setError('Please select a valid image file');
+    if (!file.type.startsWith("image/")) {
+      setError("Please select a valid image file");
       return;
     }
 
@@ -51,7 +54,7 @@ export default function ImageUpload({
 
   const uploadFile = async (file: File) => {
     if (!user) {
-      setError('You must be logged in to upload images');
+      setError("You must be logged in to upload images");
       return;
     }
 
@@ -62,15 +65,17 @@ export default function ImageUpload({
 
       // Generate unique filename with timestamp to avoid cache issues
       const timestamp = Date.now();
-      const fileExtension = file.name.split('.').pop();
-      const fileName = `${folder ? folder + '/' : ''}${timestamp}.${fileExtension}`;
+      const fileExtension = file.name.split(".").pop();
+      const fileName = `${
+        folder ? folder + "/" : ""
+      }${timestamp}.${fileExtension}`;
 
       // Upload new file
       const { error: uploadError } = await supabase.storage
         .from(bucketName)
         .upload(fileName, file, {
-          cacheControl: '3600',
-          upsert: false
+          cacheControl: "3600",
+          upsert: false,
         });
 
       if (uploadError) {
@@ -86,11 +91,10 @@ export default function ImageUpload({
         onChange(urlData.publicUrl);
         setUploadProgress(100);
       } else {
-        throw new Error('Failed to get public URL');
+        throw new Error("Failed to get public URL");
       }
-
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Upload failed');
+      setError(err instanceof Error ? err.message : "Upload failed");
     } finally {
       setIsUploading(false);
       setUploadProgress(0);
@@ -110,17 +114,15 @@ export default function ImageUpload({
   };
 
   const removeImage = () => {
-    onChange('');
+    onChange("");
     if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      fileInputRef.current.value = "";
     }
   };
 
   return (
     <div className="space-y-3">
-      <label className="block text-sm font-medium text-white">
-        {label}
-      </label>
+      <label className="block text-sm font-medium text-white">{label}</label>
 
       {/* URL Input */}
       <input
@@ -142,8 +144,8 @@ export default function ImageUpload({
       <div
         className={`border-2 border-dashed rounded-lg p-6 text-center transition-all duration-200 ${
           isUploading
-            ? 'border-purple-500 bg-purple-500/10'
-            : 'border-white/20 hover:border-white/40 bg-white/5'
+            ? "border-purple-500 bg-purple-500/10"
+            : "border-white/20 hover:border-white/40 bg-white/5"
         }`}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
@@ -155,9 +157,7 @@ export default function ImageUpload({
           </div>
         ) : (
           <div className="space-y-3">
-            <svg className="w-12 h-12 text-gray-400 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-            </svg>
+            <CloudUploadIcon className="w-12 h-12 text-gray-400 mx-auto" />
             <div>
               <p className="text-white font-medium">Drop an image here, or</p>
               <button
@@ -199,7 +199,7 @@ export default function ImageUpload({
             alt="Preview"
             className="w-full h-32 object-cover rounded-lg"
             onError={(e) => {
-              e.currentTarget.style.display = 'none';
+              e.currentTarget.style.display = "none";
             }}
             width={100}
             height={100}
