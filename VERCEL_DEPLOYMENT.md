@@ -32,20 +32,22 @@ vercel --prod
 ## 🔧 **Configuration**
 
 ### **Next.js Config (`next.config.ts`)**
+
 ```typescript
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['localhost'],
+    domains: ["localhost"],
   },
   env: {
     NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
     NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
   },
-}
+};
 ```
 
 ### **Vercel Config (`vercel.json`)**
+
 ```json
 {
   "version": 2,
@@ -77,21 +79,25 @@ Set these in your Vercel dashboard:
 ## 📋 **Features That Work Perfectly**
 
 ### **✅ Dynamic Routing**
+
 - `/store/[slug]` - Works perfectly
 - No 404 issues on page refresh
 - SEO-friendly URLs
 
 ### **✅ Authentication**
+
 - Google OAuth works
 - Email/password authentication
 - Session management
 
 ### **✅ Store Management**
+
 - Create, edit, delete stores
 - Real-time data updates
 - Image uploads
 
 ### **✅ Performance**
+
 - Automatic image optimization
 - Code splitting
 - Edge caching
@@ -99,6 +105,7 @@ Set these in your Vercel dashboard:
 ## 🚀 **Deployment Steps**
 
 ### **Step 1: Prepare Your Code**
+
 ```bash
 # Make sure everything is committed
 git add .
@@ -107,6 +114,7 @@ git push origin main
 ```
 
 ### **Step 2: Deploy**
+
 ```bash
 # Install Vercel CLI
 npm install -g vercel
@@ -116,12 +124,14 @@ vercel --prod
 ```
 
 ### **Step 3: Configure Environment Variables**
+
 1. Go to Vercel dashboard
 2. Select your project
 3. Go to Settings → Environment Variables
 4. Add your Supabase credentials
 
 ### **Step 4: Test Your App**
+
 - Visit your Vercel URL
 - Test all features
 - Verify authentication works
@@ -130,12 +140,14 @@ vercel --prod
 ## 📊 **Performance Benefits**
 
 ### **Before (Static Export)**
+
 - ❌ 404 errors on refresh
 - ❌ Limited functionality
 - ❌ No server-side features
 - ❌ Manual deployment
 
 ### **After (Vercel)**
+
 - ✅ Perfect routing
 - ✅ Full Next.js features
 - ✅ Automatic deployments
@@ -144,6 +156,7 @@ vercel --prod
 ## 🔄 **Automatic Deployments**
 
 Once connected to Git:
+
 - **Push to main** = Automatic production deploy
 - **Pull requests** = Preview deployments
 - **Branch pushes** = Preview deployments
@@ -166,6 +179,7 @@ Once connected to Git:
 ## 🎯 **Your URLs Will Work**
 
 After deployment:
+
 - ✅ `https://your-app.vercel.app/` - Homepage
 - ✅ `https://your-app.vercel.app/login` - Login
 - ✅ `https://your-app.vercel.app/dashboard` - Dashboard
@@ -175,6 +189,7 @@ After deployment:
 ## 🎉 **Success Checklist**
 
 After deployment, verify:
+
 - ✅ **All pages load** without errors
 - ✅ **Authentication works** (login/register)
 - ✅ **Store creation works** in dashboard
@@ -188,11 +203,13 @@ After deployment, verify:
 Your app is now perfectly configured for Vercel deployment!
 
 **Run this command:**
+
 ```bash
 vercel --prod
 ```
 
 **Your app will work perfectly with:**
+
 - ✅ No 404 issues
 - ✅ Full functionality
 - ✅ Automatic deployments
@@ -204,3 +221,4 @@ vercel --prod
 
 npx vercel env add NEXT_PUBLIC_SUPABASE_URL
 npx vercel env add NEXT_PUBLIC_SUPABASE_ANON_KEY
+npx vercel env add NEXT_PUBLIC_MAPBOX_TOKEN

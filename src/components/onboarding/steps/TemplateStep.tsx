@@ -4,7 +4,7 @@ import { templateService } from "@/services/templateService";
 import { Template, TemplateFeature } from "@/types/database";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { OnboardingStepProps } from "../types";
+import { OnboardingStepProps } from "../../../types/onboarding";
 
 const TemplateStep: React.FC<OnboardingStepProps> = ({
   onNext,

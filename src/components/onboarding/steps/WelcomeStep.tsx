@@ -4,7 +4,7 @@ import {
   RocketIcon,
   StoreIcon,
 } from "@/components/icons";
-import { OnboardingStepProps } from "../types";
+import { OnboardingStepProps } from "../../../types/onboarding";
 
 const WelcomeStep: React.FC<OnboardingStepProps> = ({ onNext }) => (
   <div className="text-center">

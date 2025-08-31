@@ -1,6 +1,6 @@
 import MapLocationPicker from "@/components/MapLocationPicker";
 import { useState } from "react";
-import { OnboardingStepProps } from "../types";
+import { OnboardingStepProps } from "../../../types/onboarding";
 
 const StoreLocationStep: React.FC<OnboardingStepProps> = ({
   onNext,

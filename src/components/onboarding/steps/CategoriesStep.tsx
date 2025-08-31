@@ -1,4 +1,4 @@
-import { OnboardingStepProps } from "../types";
+import { OnboardingStepProps } from "../../../types/onboarding";
 
 const CategoriesStep: React.FC<OnboardingStepProps> = ({
   onNext,

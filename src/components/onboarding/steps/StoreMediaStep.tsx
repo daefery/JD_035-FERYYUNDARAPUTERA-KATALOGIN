@@ -1,6 +1,6 @@
 import ImageUpload from "@/components/ImageUpload";
 import { useState } from "react";
-import { OnboardingStepProps } from "../types";
+import { OnboardingStepProps } from "../../../types/onboarding";
 
 const StoreMediaStep: React.FC<OnboardingStepProps> = ({
   onNext,

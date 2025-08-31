@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { OnboardingStepProps } from "../types";
+import { OnboardingStepProps } from "../../../types/onboarding";
 
 const StoreSocialStep: React.FC<OnboardingStepProps> = ({
   onNext,

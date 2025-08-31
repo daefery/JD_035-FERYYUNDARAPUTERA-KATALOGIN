@@ -1,6 +1,6 @@
 import { PartyIcon, RocketIcon } from "@/components/icons";
 import { useState } from "react";
-import { OnboardingStepProps } from "../types";
+import { OnboardingStepProps } from "../../../types/onboarding";
 
 const PreviewStep: React.FC<OnboardingStepProps> = ({
   onNext,

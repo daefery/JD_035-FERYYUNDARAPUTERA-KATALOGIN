@@ -11,15 +11,18 @@ import {
 import { templateService } from "@/services/templateService";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import MenuManagementStep from "./steps/MenuManagementStep";
-import PreviewStep from "./steps/PreviewStep";
-import StoreBasicStep from "./steps/StoreBasicStep";
-import StoreLocationStep from "./steps/StoreLocationStep";
-import StoreMediaStep from "./steps/StoreMediaStep";
-import StoreSocialStep from "./steps/StoreSocialStep";
-import TemplateStep from "./steps/TemplateStep";
-import WelcomeStep from "./steps/WelcomeStep";
-import { OnboardingFormData, OnboardingStepProps } from "./types";
+import MenuManagementStep from "../../components/onboarding/steps/MenuManagementStep";
+import PreviewStep from "../../components/onboarding/steps/PreviewStep";
+import StoreBasicStep from "../../components/onboarding/steps/StoreBasicStep";
+import StoreLocationStep from "../../components/onboarding/steps/StoreLocationStep";
+import StoreMediaStep from "../../components/onboarding/steps/StoreMediaStep";
+import StoreSocialStep from "../../components/onboarding/steps/StoreSocialStep";
+import TemplateStep from "../../components/onboarding/steps/TemplateStep";
+import WelcomeStep from "../../components/onboarding/steps/WelcomeStep";
+import {
+  OnboardingFormData,
+  OnboardingStepProps,
+} from "../../types/onboarding";
 
 interface OnboardingStep {
   id: string;
