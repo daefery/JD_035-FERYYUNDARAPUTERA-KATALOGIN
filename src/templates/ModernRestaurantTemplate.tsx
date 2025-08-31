@@ -1,16 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import BackToTop from "@/components/BackToTop";
+import DarkLanguageSwitcher from "@/components/DarkLanguageSwitcher";
+import DownloadMenu from "@/components/DownloadMenu";
 import {
   EmailIcon,
   FacebookIcon,
+  FeaturedIcon,
   ImageIcon,
   InstagramIcon,
   LocationIcon,
   PhoneIcon,
   PlusIcon,
+  StarIcon,
   TikTokIcon,
   TwitterIcon,
+  WhatsAppIcon,
 } from "@/components/icons";
+import QuickDownloadButton from "@/components/QuickDownloadButton";
 import TemplateHeader from "@/components/TemplateHeader";
 import { Category, MenuItem, Store } from "@/types/database";
 import {
@@ -21,7 +27,9 @@ import {
   updateSessionToNonBounce,
 } from "@/utils/analytics";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 interface ModernRestaurantTemplateProps {
   store?: Store;
@@ -34,6 +42,7 @@ const ModernRestaurantTemplate: React.FC<ModernRestaurantTemplateProps> = ({
   categories,
   menuItems,
 }) => {
+  const { t } = useTranslation();
   // Analytics tracking
   useEffect(() => {
     const _store = store || defaultStore;
@@ -239,7 +248,7 @@ const ModernRestaurantTemplate: React.FC<ModernRestaurantTemplateProps> = ({
 
         {/* Store Header */}
         <div className="max-w-6xl mx-auto">
-          <div className="flex justify-between items-center mb-12">
+          <div className="flex justify-between items-center mb-4 md:mb-12">
             <div className="flex items-center gap-4">
               {/* Store Logo */}
               {(_store as any).logo_url && (
@@ -266,66 +275,140 @@ const ModernRestaurantTemplate: React.FC<ModernRestaurantTemplateProps> = ({
               </div>
             </div>
 
-            {/* Social Media Links */}
+            {/* Social Media Links & Language Switcher */}
+            <div className="flex items-center gap-3">
+              {/* Social Media Links */}
+              {((_store as any).facebook_url ||
+                (_store as any).instagram_url ||
+                (_store as any).twitter_url ||
+                (_store as any).tiktok_url) && (
+                <div className="hidden md:flex items-center gap-3">
+                  {/* Instagram */}
+                  {(_store as any).instagram_url && (
+                    <Link
+                      href={(_store as any).instagram_url}
+                      onClick={() => handleSocialClick("instagram")}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:scale-110 transition-transform duration-200"
+                      aria-label={t("template.ariaLabels.instagram")}
+                    >
+                      <InstagramIcon className="w-5 h-5 text-white hover:text-pink-400 transition-colors" />
+                    </Link>
+                  )}
+
+                  {/* Facebook */}
+                  {(_store as any).facebook_url && (
+                    <Link
+                      href={(_store as any).facebook_url}
+                      onClick={() => handleSocialClick("facebook")}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:scale-110 transition-transform duration-200"
+                      aria-label={t("template.ariaLabels.facebook")}
+                    >
+                      <FacebookIcon className="w-5 h-5 text-white hover:text-blue-500 transition-colors" />
+                    </Link>
+                  )}
+
+                  {/* Twitter/X */}
+                  {(_store as any).twitter_url && (
+                    <Link
+                      href={(_store as any).twitter_url}
+                      onClick={() => handleSocialClick("twitter")}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:scale-110 transition-transform duration-200"
+                      aria-label={t("template.ariaLabels.twitter")}
+                    >
+                      <TwitterIcon className="w-5 h-5 text-white hover:text-blue-400 transition-colors" />
+                    </Link>
+                  )}
+
+                  {/* TikTok */}
+                  {(_store as any).tiktok_url && (
+                    <Link
+                      href={(_store as any).tiktok_url}
+                      onClick={() => handleSocialClick("tiktok")}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:scale-110 transition-transform duration-200"
+                      aria-label={t("template.ariaLabels.tiktok")}
+                    >
+                      <TikTokIcon className="w-5 h-5 text-white hover:text-pink-500 transition-colors" />
+                    </Link>
+                  )}
+                </div>
+              )}
+
+              {/* Language Switcher */}
+              <div className="ml-4">
+                <DarkLanguageSwitcher />
+              </div>
+            </div>
+          </div>
+
+          {/* Social Media Links mobile only */}
+          <div className="mb-4">
             {((_store as any).facebook_url ||
               (_store as any).instagram_url ||
               (_store as any).twitter_url ||
               (_store as any).tiktok_url) && (
-              <div className="flex items-center gap-3">
+              <div className=" md:hidden flex items-center justify-end gap-3">
                 {/* Instagram */}
                 {(_store as any).instagram_url && (
-                  <a
+                  <Link
                     href={(_store as any).instagram_url}
                     onClick={() => handleSocialClick("instagram")}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:scale-110 transition-transform duration-200"
-                    aria-label="Follow us on Instagram"
+                    aria-label={t("template.ariaLabels.instagram")}
                   >
                     <InstagramIcon className="w-5 h-5 text-white hover:text-pink-400 transition-colors" />
-                  </a>
+                  </Link>
                 )}
 
                 {/* Facebook */}
                 {(_store as any).facebook_url && (
-                  <a
+                  <Link
                     href={(_store as any).facebook_url}
                     onClick={() => handleSocialClick("facebook")}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:scale-110 transition-transform duration-200"
-                    aria-label="Follow us on Facebook"
+                    aria-label={t("template.ariaLabels.facebook")}
                   >
                     <FacebookIcon className="w-5 h-5 text-white hover:text-blue-500 transition-colors" />
-                  </a>
+                  </Link>
                 )}
 
                 {/* Twitter/X */}
                 {(_store as any).twitter_url && (
-                  <a
+                  <Link
                     href={(_store as any).twitter_url}
                     onClick={() => handleSocialClick("twitter")}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:scale-110 transition-transform duration-200"
-                    aria-label="Follow us on Twitter/X"
+                    aria-label={t("template.ariaLabels.twitter")}
                   >
                     <TwitterIcon className="w-5 h-5 text-white hover:text-blue-400 transition-colors" />
-                  </a>
+                  </Link>
                 )}
 
                 {/* TikTok */}
                 {(_store as any).tiktok_url && (
-                  <a
+                  <Link
                     href={(_store as any).tiktok_url}
                     onClick={() => handleSocialClick("tiktok")}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:scale-110 transition-transform duration-200"
-                    aria-label="Follow us on TikTok"
+                    aria-label={t("template.ariaLabels.tiktok")}
                   >
                     <TikTokIcon className="w-5 h-5 text-white hover:text-pink-500 transition-colors" />
-                  </a>
+                  </Link>
                 )}
               </div>
             )}
@@ -346,7 +429,7 @@ const ModernRestaurantTemplate: React.FC<ModernRestaurantTemplateProps> = ({
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent">
                   <div className="absolute bottom-6 left-6 right-6">
                     <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2">
-                      Welcome to {_store.name}
+                      {t("template.welcomeTo")} {_store.name}
                     </h2>
                     {(_store as any).description && (
                       <p className="text-white/90 text-sm md:text-base max-w-2xl">
@@ -375,14 +458,13 @@ const ModernRestaurantTemplate: React.FC<ModernRestaurantTemplateProps> = ({
                 {/* Section Header */}
                 <div className="relative text-center mb-10">
                   <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full mb-4 shadow-lg">
-                    <span className="text-2xl">⭐</span>
+                    <StarIcon className="w-8 h-8 text-white" />
                   </div>
                   <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">
-                    Featured Items
+                    {t("template.featuredItems")}
                   </h2>
                   <p className="text-gray-300 text-lg max-w-2xl mx-auto">
-                    Our most popular and highly recommended dishes that
-                    customers love
+                    {t("template.featuredItemsDescription")}
                   </p>
                 </div>
 
@@ -395,7 +477,23 @@ const ModernRestaurantTemplate: React.FC<ModernRestaurantTemplateProps> = ({
                       .map((item: any, index: number) => (
                         <div
                           key={item.id}
-                          className="relative bg-white/10 backdrop-blur-lg rounded-2xl overflow-hidden shadow-2xl border border-white/20 transform hover:scale-105 transition-all duration-300 group"
+                          className="relative bg-white/10 backdrop-blur-lg rounded-2xl overflow-hidden shadow-2xl border border-white/20 transform hover:scale-105 transition-all duration-300 group cursor-pointer"
+                          onClick={() => {
+                            if ((_store as any).phone) {
+                              const message = encodeURIComponent(
+                                `${t("template.whatsappMessage")} ${item.name}`
+                              );
+                              const phone = (_store as any).phone.replace(
+                                /\D/g,
+                                ""
+                              );
+                              window.open(
+                                `https://wa.me/${phone}?text=${message}`,
+                                "_blank"
+                              );
+                              handleMenuItemClick(item);
+                            }
+                          }}
                         >
                           {/* Position Badge */}
                           <div className="absolute top-4 right-4 z-10">
@@ -406,8 +504,9 @@ const ModernRestaurantTemplate: React.FC<ModernRestaurantTemplateProps> = ({
 
                           {/* Featured Badge */}
                           <div className="absolute top-4 left-4 z-10">
-                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg">
-                              ⭐ Featured
+                            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg">
+                              <FeaturedIcon className="w-3 h-3" />
+                              {t("template.featured")}
                             </span>
                           </div>
 
@@ -427,6 +526,18 @@ const ModernRestaurantTemplate: React.FC<ModernRestaurantTemplateProps> = ({
                                 </div>
                               </div>
                             )}
+
+                            {/* WhatsApp Hover Indicator */}
+                            {(_store as any).phone && (
+                              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <div className="bg-green-500 text-white px-4 py-2 rounded-full flex items-center gap-2 shadow-lg">
+                                  <WhatsAppIcon className="w-5 h-5" />
+                                  <span className="text-sm font-medium">
+                                    {t("template.askOnWhatsApp")}
+                                  </span>
+                                </div>
+                              </div>
+                            )}
                           </div>
 
                           {/* Item Content */}
@@ -436,7 +547,8 @@ const ModernRestaurantTemplate: React.FC<ModernRestaurantTemplateProps> = ({
                                 {item.name}
                               </h3>
                               <span className="text-yellow-400 font-bold text-lg">
-                                Rp {Number(item.price).toLocaleString("id-ID")}
+                                {t("template.currency")}{" "}
+                                {Number(item.price).toLocaleString("id-ID")}
                               </span>
                             </div>
 
@@ -451,7 +563,7 @@ const ModernRestaurantTemplate: React.FC<ModernRestaurantTemplateProps> = ({
                               <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-500/20 text-purple-300 border border-purple-500/30">
                                 {_categories.find(
                                   (cat: any) => cat.id === item.category_id
-                                )?.name || "Uncategorized"}
+                                )?.name || t("template.uncategorized")}
                               </span>
 
                               {/* Availability Badge */}
@@ -463,8 +575,8 @@ const ModernRestaurantTemplate: React.FC<ModernRestaurantTemplateProps> = ({
                                 }`}
                               >
                                 {item.is_available
-                                  ? "Available"
-                                  : "Unavailable"}
+                                  ? t("template.available")
+                                  : t("template.unavailable")}
                               </span>
                             </div>
                           </div>
@@ -480,10 +592,10 @@ const ModernRestaurantTemplate: React.FC<ModernRestaurantTemplateProps> = ({
                         <PlusIcon className="w-10 h-10 text-gray-400" />
                       </div>
                       <p className="text-gray-400 text-lg">
-                        No featured items yet
+                        {t("template.noFeaturedItems")}
                       </p>
                       <p className="text-gray-500 text-sm">
-                        Mark items as featured to showcase them here
+                        {t("template.noFeaturedItemsDescription")}
                       </p>
                     </div>
                   )}
@@ -513,8 +625,23 @@ const ModernRestaurantTemplate: React.FC<ModernRestaurantTemplateProps> = ({
                   {category.items.map((item: any) => (
                     <div
                       key={item.id}
-                      className="bg-white rounded-[28px] shadow-2xl overflow-hidden transform hover:scale-105 transition-transform duration-300 cursor-pointer"
-                      onClick={() => handleMenuItemClick(item)}
+                      className="bg-white rounded-[28px] shadow-2xl overflow-hidden transform hover:scale-105 transition-transform duration-300 cursor-pointer group"
+                      onClick={() => {
+                        if ((_store as any).phone) {
+                          const message = encodeURIComponent(
+                            `${t("template.whatsappMessage")} ${item.name}`
+                          );
+                          const phone = (_store as any).phone.replace(
+                            /\D/g,
+                            ""
+                          );
+                          window.open(
+                            `https://wa.me/${phone}?text=${message}`,
+                            "_blank"
+                          );
+                          handleMenuItemClick(item);
+                        }
+                      }}
                       onMouseEnter={() => handleMenuItemView(item)}
                     >
                       {/* Item Image */}
@@ -530,6 +657,18 @@ const ModernRestaurantTemplate: React.FC<ModernRestaurantTemplateProps> = ({
                           <div className="w-full h-full flex items-center justify-center">
                             <div className="w-16 h-16 bg-gray-300 rounded-full flex items-center justify-center">
                               <ImageIcon className="w-8 h-8 text-gray-500" />
+                            </div>
+                          </div>
+                        )}
+
+                        {/* WhatsApp Hover Indicator */}
+                        {(_store as any).phone && (
+                          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <div className="bg-green-500 text-white px-4 py-2 rounded-full flex items-center gap-2 shadow-lg">
+                              <WhatsAppIcon className="w-5 h-5" />
+                              <span className="text-sm font-medium">
+                                {t("template.askOnWhatsApp")}
+                              </span>
                             </div>
                           </div>
                         )}
@@ -556,12 +695,15 @@ const ModernRestaurantTemplate: React.FC<ModernRestaurantTemplateProps> = ({
                                 : "bg-red-100 text-red-800"
                             }`}
                           >
-                            {item.is_available ? "Available" : "Unavailable"}
+                            {item.is_available
+                              ? t("template.available")
+                              : t("template.unavailable")}
                           </span>
                         </div>
 
                         <div className="bg-amber-700/90 text-white px-3 py-1 rounded-full font-bold text-lg shadow-lg">
-                          Rp {Number(item.price).toLocaleString("id-ID")}
+                          {t("template.currency")}{" "}
+                          {Number(item.price).toLocaleString("id-ID")}
                         </div>
                       </div>
                     </div>
@@ -572,12 +714,23 @@ const ModernRestaurantTemplate: React.FC<ModernRestaurantTemplateProps> = ({
           </div>
         </div>
 
+        {/* PDF Download Section */}
+        <div id="download-section">
+          <DownloadMenu
+            store={_store}
+            categories={_categories}
+            menuItems={_menuItems}
+            variant="elegant"
+            className="mt-20"
+          />
+        </div>
+
         {/* Contact Information */}
         <div className="mt-20 pt-12 border-t border-gray-700">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center items-start">
             {/* Email */}
             {(_store as any).email && (
-              <a
+              <Link
                 href={`mailto:${(_store as any).email}`}
                 onClick={() => handleContactClick("email")}
                 className="flex flex-col items-center justify-center gap-2 hover:scale-105 transition-transform duration-200 cursor-pointer group"
@@ -590,16 +743,16 @@ const ModernRestaurantTemplate: React.FC<ModernRestaurantTemplateProps> = ({
                     {(_store as any).email}
                   </p>
                 </div>
-              </a>
+              </Link>
             )}
 
             {/* Phone */}
             {(_store as any).phone && (
-              <a
+              <Link
                 href={`https://wa.me/${(_store as any).phone.replace(
                   /\D/g,
                   ""
-                )}?text=Hi, I'm interested in your menu!`}
+                )}?text=${encodeURIComponent(t("template.whatsappMessage"))}`}
                 onClick={() => handleContactClick("whatsapp")}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -613,12 +766,12 @@ const ModernRestaurantTemplate: React.FC<ModernRestaurantTemplateProps> = ({
                     {(_store as any).phone}
                   </p>
                 </div>
-              </a>
+              </Link>
             )}
 
             {/* Address */}
             {(_store as any).address && (
-              <a
+              <Link
                 href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
                   (_store as any).address
                 )}`}
@@ -635,13 +788,16 @@ const ModernRestaurantTemplate: React.FC<ModernRestaurantTemplateProps> = ({
                     {(_store as any).address}
                   </p>
                 </div>
-              </a>
+              </Link>
             )}
           </div>
         </div>
 
         {/* Back to Top Button */}
         <BackToTop />
+
+        {/* Quick Access Download Button */}
+        <QuickDownloadButton variant="elegant" />
       </div>
     </div>
   );

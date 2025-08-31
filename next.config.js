@@ -1,8 +1,9 @@
-import type { NextConfig } from 'next'
-
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   // Standard Next.js configuration for Vercel deployment
   reactStrictMode: true,
+  
+
   
   // Disable image optimization for external domains to avoid issues
   images: {
@@ -36,4 +37,4 @@ const nextConfig: NextConfig = {
   },
 }
 
-export default nextConfig
+module.exports = nextConfig

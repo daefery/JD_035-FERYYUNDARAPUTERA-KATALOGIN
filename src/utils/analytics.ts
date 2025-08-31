@@ -79,33 +79,33 @@ export const getOS = (): string => {
 };
 
 // Get IP and location (simplified - in production you'd use a service)
-export const getLocationData = async () => {
-  try {
-    const response = await fetch("https://ipapi.co/json/");
-    const data = await response.json();
-    return {
-      country: data.country_name,
-      city: data.city,
-      region: data.region,
-      latitude: data.latitude,
-      longitude: data.longitude,
-    };
-  } catch (error) {
-    console.error("Failed to get location data:", error);
-    return {
-      country: "Unknown",
-      city: "Unknown",
-      region: "Unknown",
-      latitude: null,
-      longitude: null,
-    };
-  }
-};
+// export const getLocationData = async () => {
+//   try {
+//     const response = await fetch("https://ipapi.co/json/");
+//     const data = await response.json();
+//     return {
+//       country: data.country_name,
+//       city: data.city,
+//       region: data.region,
+//       latitude: data.latitude,
+//       longitude: data.longitude,
+//     };
+//   } catch (error) {
+//     console.error("Failed to get location data:", error);
+//     return {
+//       country: "Unknown",
+//       city: "Unknown",
+//       region: "Unknown",
+//       latitude: null,
+//       longitude: null,
+//     };
+//   }
+// };
 
 // Track store visit
 export const trackStoreVisit = async (storeId: string) => {
   try {
-    const locationData = await getLocationData();
+    // const locationData = await getLocationData();
     const usePublic = shouldUsePublicAnalytics();
     const service = usePublic ? publicAnalyticsService : analyticsService;
 
@@ -118,7 +118,7 @@ export const trackStoreVisit = async (storeId: string) => {
       device_type: getDeviceType(),
       browser: getBrowser(),
       os: getOS(),
-      ...locationData,
+      // ...locationData,
       visit_date: new Date().toISOString().split("T")[0],
       visit_time: new Date().toISOString(),
       page_views: 1,

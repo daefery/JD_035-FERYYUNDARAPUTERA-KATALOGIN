@@ -269,7 +269,7 @@ export default function CreateStorePage() {
                     value={formData.phone}
                     onChange={handleInputChange}
                     className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
-                    placeholder="+1 (555) 123-4567"
+                    placeholder="+62 11234567890"
                   />
                 </div>
 

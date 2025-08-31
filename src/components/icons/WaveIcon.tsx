@@ -1,10 +1,8 @@
-import React from "react";
-
-interface TrendingUpIconProps {
+interface WaveIconProps {
   className?: string;
 }
 
-export default function TrendingUpIcon({ className = "" }: TrendingUpIconProps) {
+export default function WaveIcon({ className = "" }: WaveIconProps) {
   return (
     <svg
       className={className}
@@ -16,7 +14,7 @@ export default function TrendingUpIcon({ className = "" }: TrendingUpIconProps) 
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={2}
-        d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+        d="M7 16l-4-4m0 0l4-4m-4 4h18"
       />
     </svg>
   );

@@ -1,23 +1,14 @@
-import React from "react";
-
 interface ClipboardIconProps {
   className?: string;
-  size?: number;
 }
 
-const ClipboardIcon: React.FC<ClipboardIconProps> = ({
-  className = "w-6 h-6",
-  size,
-}) => {
+export default function ClipboardIcon({ className = "" }: ClipboardIconProps) {
   return (
     <svg
       className={className}
-      width={size}
-      height={size}
       fill="none"
       stroke="currentColor"
       viewBox="0 0 24 24"
-      aria-hidden="true"
     >
       <path
         strokeLinecap="round"
@@ -27,6 +18,4 @@ const ClipboardIcon: React.FC<ClipboardIconProps> = ({
       />
     </svg>
   );
-};
-
-export default ClipboardIcon;
+}

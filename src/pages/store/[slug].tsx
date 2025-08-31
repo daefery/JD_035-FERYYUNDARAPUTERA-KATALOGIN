@@ -1,3 +1,4 @@
+import { CheckIcon } from "@/components/icons";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import TemplateRenderer from "@/components/TemplateRenderer";
 import { categoryService } from "@/services/categoryService";
@@ -74,7 +75,7 @@ export default function StorePage({
       {showSuccessMessage && (
         <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg">
           <div className="flex items-center space-x-2">
-            <span className="text-xl">🎉</span>
+            <CheckIcon className="w-5 h-5" />
             <span>
               Your store is now live! Share this URL with your customers.
             </span>

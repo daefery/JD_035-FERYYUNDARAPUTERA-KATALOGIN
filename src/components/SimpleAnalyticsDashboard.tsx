@@ -54,7 +54,12 @@ const SimpleAnalyticsDashboard: React.FC<SimpleAnalyticsDashboardProps> = ({
   };
 
   const getDeviceData = () => {
-    if (!summary?.device_breakdown) return [];
+    if (
+      !summary?.device_breakdown ||
+      Object.keys(summary.device_breakdown).length === 0
+    ) {
+      return [];
+    }
 
     return Object.entries(summary.device_breakdown).map(([device, count]) => ({
       name: device,
@@ -63,7 +68,9 @@ const SimpleAnalyticsDashboard: React.FC<SimpleAnalyticsDashboardProps> = ({
   };
 
   const getDailyTrendsData = () => {
-    if (!summary?.daily_trends) return [];
+    if (!summary?.daily_trends || summary.daily_trends.length === 0) {
+      return [];
+    }
 
     return summary.daily_trends.map((trend) => ({
       name: new Date(trend.date).toLocaleDateString("en-US", {
@@ -75,23 +82,14 @@ const SimpleAnalyticsDashboard: React.FC<SimpleAnalyticsDashboardProps> = ({
   };
 
   const getTopInteractionsData = () => {
-    if (!summary?.top_interactions) return [];
+    if (!summary?.top_interactions || summary.top_interactions.length === 0) {
+      return [];
+    }
 
     return summary.top_interactions.slice(0, 8).map((interaction) => ({
       name: interaction.type,
       value: interaction.count,
     }));
-  };
-
-  const getMenuPerformanceData = () => {
-    // Since menuItemPerformance is not in AnalyticsSummary, we'll create mock data
-    return [
-      { name: "Sample Item 1", value: 25 },
-      { name: "Sample Item 2", value: 18 },
-      { name: "Sample Item 3", value: 15 },
-      { name: "Sample Item 4", value: 12 },
-      { name: "Sample Item 5", value: 10 },
-    ];
   };
 
   if (loading) {
@@ -271,36 +269,84 @@ const SimpleAnalyticsDashboard: React.FC<SimpleAnalyticsDashboardProps> = ({
         {/* Charts Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           {/* Daily Trends Chart */}
-          <SimpleAnalyticsChart
-            title="Daily Trends"
-            data={getDailyTrendsData()}
-            type="line"
-          />
+          <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl p-6">
+            <h3 className="text-lg font-semibold text-white mb-4">
+              Daily Trends
+            </h3>
+            {getDailyTrendsData().length > 0 ? (
+              <SimpleAnalyticsChart
+                title="Daily Trends"
+                data={getDailyTrendsData()}
+                type="line"
+              />
+            ) : (
+              <div className="text-center py-8">
+                <p className="text-slate-400 text-sm">
+                  No daily trends data available
+                </p>
+              </div>
+            )}
+          </div>
 
           {/* Device Breakdown */}
-          <SimpleAnalyticsChart
-            title="Device Breakdown"
-            data={getDeviceData()}
-            type="pie"
-          />
+          <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl p-6">
+            <h3 className="text-lg font-semibold text-white mb-4">
+              Device Breakdown
+            </h3>
+            {getDeviceData().length > 0 ? (
+              <SimpleAnalyticsChart
+                title="Device Breakdown"
+                data={getDeviceData()}
+                type="pie"
+              />
+            ) : (
+              <div className="text-center py-8">
+                <p className="text-slate-400 text-sm">
+                  No device data available
+                </p>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Top Interactions */}
         <div className="mb-8">
-          <SimpleAnalyticsChart
-            title="Top Interactions"
-            data={getTopInteractionsData()}
-            type="bar"
-          />
+          <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl p-6">
+            <h3 className="text-lg font-semibold text-white mb-4">
+              Top Interactions
+            </h3>
+            {getTopInteractionsData().length > 0 ? (
+              <SimpleAnalyticsChart
+                title="Top Interactions"
+                data={getTopInteractionsData()}
+                type="bar"
+              />
+            ) : (
+              <div className="text-center py-8">
+                <p className="text-slate-400 text-sm">
+                  No interaction data available
+                </p>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Menu Performance */}
         <div className="mb-8">
-          <SimpleAnalyticsChart
-            title="Top Menu Items"
-            data={getMenuPerformanceData()}
-            type="bar"
-          />
+          <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl p-6">
+            <h3 className="text-lg font-semibold text-white mb-4">
+              Top Menu Items
+            </h3>
+            <div className="text-center py-8">
+              <p className="text-slate-400 text-sm mb-2">
+                Menu item analytics coming soon
+              </p>
+              <p className="text-slate-500 text-xs">
+                This feature will track which menu items are most viewed and
+                clicked
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Additional Insights */}
@@ -310,15 +356,19 @@ const SimpleAnalyticsDashboard: React.FC<SimpleAnalyticsDashboardProps> = ({
               Peak Hours
             </h4>
             <div className="space-y-2">
-              {summary.peak_hours?.slice(0, 5).map((hour) => (
-                <div
-                  key={hour.hour}
-                  className="flex justify-between items-center"
-                >
-                  <span className="text-slate-300">{hour.hour}:00</span>
-                  <span className="text-white font-medium">{hour.visits}</span>
-                </div>
-              )) || (
+              {summary.peak_hours && summary.peak_hours.length > 0 ? (
+                summary.peak_hours.slice(0, 5).map((hour) => (
+                  <div
+                    key={hour.hour}
+                    className="flex justify-between items-center"
+                  >
+                    <span className="text-slate-300">{hour.hour}:00</span>
+                    <span className="text-white font-medium">
+                      {hour.visits}
+                    </span>
+                  </div>
+                ))
+              ) : (
                 <p className="text-slate-400 text-sm">
                   No peak hours data available
                 </p>
@@ -331,19 +381,21 @@ const SimpleAnalyticsDashboard: React.FC<SimpleAnalyticsDashboardProps> = ({
               Top Countries
             </h4>
             <div className="space-y-2">
-              {summary.top_countries?.slice(0, 5).map((country) => (
-                <div
-                  key={country.country}
-                  className="flex justify-between items-center"
-                >
-                  <span className="text-slate-300 truncate">
-                    {country.country}
-                  </span>
-                  <span className="text-white font-medium">
-                    {country.visits}
-                  </span>
-                </div>
-              )) || (
+              {summary.top_countries && summary.top_countries.length > 0 ? (
+                summary.top_countries.slice(0, 5).map((country) => (
+                  <div
+                    key={country.country}
+                    className="flex justify-between items-center"
+                  >
+                    <span className="text-slate-300 truncate">
+                      {country.country}
+                    </span>
+                    <span className="text-white font-medium">
+                      {country.visits}
+                    </span>
+                  </div>
+                ))
+              ) : (
                 <p className="text-slate-400 text-sm">
                   No country data available
                 </p>

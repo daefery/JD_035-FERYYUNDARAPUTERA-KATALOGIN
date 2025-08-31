@@ -1,3 +1,4 @@
+import DownloadMenu from "@/components/DownloadMenu";
 import {
   EmailIcon,
   ImageIcon,
@@ -66,6 +67,14 @@ const RamenRestaurantTemplate: React.FC<RamenRestaurantTemplateProps> = ({
               </div>
             )}
           </div>
+
+          {/* PDF Download Section */}
+          <DownloadMenu
+            store={store}
+            categories={categories}
+            menuItems={menuItems}
+            variant="premium"
+          />
 
           {/* Menu Sections */}
           <div className="space-y-16">

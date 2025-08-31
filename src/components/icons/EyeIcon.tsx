@@ -2,22 +2,15 @@ import React from "react";
 
 interface EyeIconProps {
   className?: string;
-  size?: number;
 }
 
-const EyeIcon: React.FC<EyeIconProps> = ({
-  className = "w-6 h-6",
-  size,
-}) => {
+export default function EyeIcon({ className = "" }: EyeIconProps) {
   return (
     <svg
       className={className}
-      width={size}
-      height={size}
       fill="none"
       stroke="currentColor"
       viewBox="0 0 24 24"
-      aria-hidden="true"
     >
       <path
         strokeLinecap="round"
@@ -33,6 +26,4 @@ const EyeIcon: React.FC<EyeIconProps> = ({
       />
     </svg>
   );
-};
-
-export default EyeIcon;
+}

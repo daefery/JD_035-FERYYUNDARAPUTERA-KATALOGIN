@@ -1,3 +1,4 @@
+import { PartyIcon, RocketIcon } from "@/components/icons";
 import { useState } from "react";
 import { OnboardingStepProps } from "../types";
 
@@ -27,7 +28,9 @@ const PreviewStep: React.FC<OnboardingStepProps> = ({
         </div>
       )}
       <div className="text-center space-y-6">
-        <div className="text-6xl mb-4">🎉</div>
+        <div className="mb-4 flex justify-center">
+          <PartyIcon className="w-16 h-16 text-purple-400" />
+        </div>
         <h3 className="text-2xl font-bold text-white">Ready to Launch!</h3>
         <p className="text-gray-300">
           Your store &quot;{data.store?.name}&quot; is ready to go live.
@@ -73,7 +76,10 @@ const PreviewStep: React.FC<OnboardingStepProps> = ({
                 Creating Store...
               </>
             ) : (
-              <>🚀 Launch Store</>
+              <>
+                <RocketIcon className="w-4 h-4" />
+                Launch Store
+              </>
             )}
           </button>
         </div>

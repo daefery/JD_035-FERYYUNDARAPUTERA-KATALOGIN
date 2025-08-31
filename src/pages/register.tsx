@@ -1,4 +1,5 @@
 import { GoogleIcon, TwitterIcon } from "@/components/icons";
+import KataloginLogo from "@/components/KataloginLogo";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import ParticleBackground from "@/components/ParticleBackground";
 import { useAuth } from "@/contexts/AuthContext";
@@ -6,6 +7,7 @@ import { Geist } from "next/font/google";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const geist = Geist({
   subsets: ["latin"],
@@ -14,6 +16,7 @@ const geist = Geist({
 export default function Register() {
   const router = useRouter();
   const { user, loading, signUp, signInWithGoogle } = useAuth();
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -114,10 +117,13 @@ export default function Register() {
         <div className="w-full max-w-md">
           {/* Header */}
           <div className="text-center mb-8">
+            <div className="mb-6 flex justify-center">
+              <KataloginLogo size="md" clickable={true} />
+            </div>
             <h1 className="text-4xl font-bold text-white mb-2">
-              Create Account
+              {t("auth.createAccount")}
             </h1>
-            <p className="text-gray-300">Join us and get started</p>
+            <p className="text-gray-300">{t("auth.joinUsAndGetStarted")}</p>
           </div>
 
           {/* Register Form */}
@@ -134,7 +140,7 @@ export default function Register() {
                     htmlFor="firstName"
                     className="block text-sm font-medium text-white mb-2"
                   >
-                    First Name
+                    {t("auth.firstName")}
                   </label>
                   <input
                     type="text"
@@ -144,7 +150,7 @@ export default function Register() {
                     onChange={handleChange}
                     required
                     className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
-                    placeholder="John"
+                    placeholder={t("auth.firstNamePlaceholder")}
                   />
                 </div>
                 <div>
@@ -152,7 +158,7 @@ export default function Register() {
                     htmlFor="lastName"
                     className="block text-sm font-medium text-white mb-2"
                   >
-                    Last Name
+                    {t("auth.lastName")}
                   </label>
                   <input
                     type="text"
@@ -162,7 +168,7 @@ export default function Register() {
                     onChange={handleChange}
                     required
                     className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
-                    placeholder="Doe"
+                    placeholder={t("auth.lastNamePlaceholder")}
                   />
                 </div>
               </div>
@@ -172,7 +178,7 @@ export default function Register() {
                   htmlFor="email"
                   className="block text-sm font-medium text-white mb-2"
                 >
-                  Email Address
+                  {t("auth.email")}
                 </label>
                 <input
                   type="email"
@@ -182,7 +188,7 @@ export default function Register() {
                   onChange={handleChange}
                   required
                   className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
-                  placeholder="john@example.com"
+                  placeholder={t("auth.emailPlaceholder")}
                 />
               </div>
 
@@ -191,7 +197,7 @@ export default function Register() {
                   htmlFor="password"
                   className="block text-sm font-medium text-white mb-2"
                 >
-                  Password
+                  {t("auth.password")}
                 </label>
                 <input
                   type="password"
@@ -203,7 +209,7 @@ export default function Register() {
                   className={`w-full px-4 py-3 bg-white/10 border rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 ${
                     errors.password ? "border-red-400" : "border-white/20"
                   }`}
-                  placeholder="Create a strong password"
+                  placeholder={t("auth.createPassword")}
                 />
                 {errors.password && (
                   <p className="mt-1 text-sm text-red-400">{errors.password}</p>
@@ -215,7 +221,7 @@ export default function Register() {
                   htmlFor="confirmPassword"
                   className="block text-sm font-medium text-white mb-2"
                 >
-                  Confirm Password
+                  {t("auth.confirmPassword")}
                 </label>
                 <input
                   type="password"
@@ -229,7 +235,7 @@ export default function Register() {
                       ? "border-red-400"
                       : "border-white/20"
                   }`}
-                  placeholder="Confirm your password"
+                  placeholder={t("auth.confirmPasswordPlaceholder")}
                 />
                 {errors.confirmPassword && (
                   <p className="mt-1 text-sm text-red-400">
@@ -246,19 +252,19 @@ export default function Register() {
                   className="w-4 h-4 text-purple-600 bg-white/10 border-white/20 rounded focus:ring-purple-500 focus:ring-2"
                 />
                 <label htmlFor="terms" className="ml-2 text-sm text-gray-300">
-                  I agree to the{" "}
+                  {t("auth.iAgreeTo")}{" "}
                   <Link
                     href="/terms"
                     className="text-purple-400 hover:text-purple-300 transition-colors"
                   >
-                    Terms of Service
+                    {t("auth.termsOfService")}
                   </Link>{" "}
-                  and{" "}
+                  {t("auth.and")}{" "}
                   <Link
                     href="/privacy"
                     className="text-purple-400 hover:text-purple-300 transition-colors"
                   >
-                    Privacy Policy
+                    {t("auth.privacyPolicy")}
                   </Link>
                 </label>
               </div>
@@ -271,10 +277,10 @@ export default function Register() {
                 {isLoading ? (
                   <div className="flex items-center justify-center">
                     <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                    Creating account...
+                    {t("auth.creatingAccount")}
                   </div>
                 ) : (
-                  "Create Account"
+                  t("auth.createAccount")
                 )}
               </button>
             </form>
@@ -282,12 +288,12 @@ export default function Register() {
             {/* Divider */}
             <div className="mt-6">
               <div className="relative">
-                <div className="absolute inset-0 flex items-center">
+                {/* <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-white/20"></div>
-                </div>
+                </div> */}
                 <div className="relative flex justify-center text-sm">
                   <span className="px-2 bg-transparent text-gray-300">
-                    Or continue with
+                    {t("auth.orContinueWith")}
                   </span>
                 </div>
               </div>
@@ -316,12 +322,12 @@ export default function Register() {
 
             {/* Sign In Link */}
             <p className="mt-8 text-center text-sm text-gray-300">
-              Already have an account?{" "}
+              {t("auth.alreadyHaveAccount")}{" "}
               <Link
                 href="/login"
                 className="font-medium text-purple-400 hover:text-purple-300 transition-colors"
               >
-                Sign in here
+                {t("auth.signInHere")}
               </Link>
             </p>
           </div>

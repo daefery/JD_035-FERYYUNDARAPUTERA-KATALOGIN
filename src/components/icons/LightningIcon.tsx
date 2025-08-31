@@ -1,10 +1,8 @@
-import React from "react";
-
-interface TrendingUpIconProps {
+interface LightningIconProps {
   className?: string;
 }
 
-export default function TrendingUpIcon({ className = "" }: TrendingUpIconProps) {
+export default function LightningIcon({ className = "" }: LightningIconProps) {
   return (
     <svg
       className={className}
@@ -16,7 +14,7 @@ export default function TrendingUpIcon({ className = "" }: TrendingUpIconProps) 
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={2}
-        d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+        d="M13 10V3L4 14h7v7l9-11h-7z"
       />
     </svg>
   );

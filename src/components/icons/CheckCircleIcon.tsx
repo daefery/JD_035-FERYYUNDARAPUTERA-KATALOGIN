@@ -1,10 +1,8 @@
-import React from "react";
-
-interface TrendingUpIconProps {
+interface CheckCircleIconProps {
   className?: string;
 }
 
-export default function TrendingUpIcon({ className = "" }: TrendingUpIconProps) {
+export default function CheckCircleIcon({ className = "" }: CheckCircleIconProps) {
   return (
     <svg
       className={className}
@@ -16,7 +14,7 @@ export default function TrendingUpIcon({ className = "" }: TrendingUpIconProps) 
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={2}
-        d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
       />
     </svg>
   );

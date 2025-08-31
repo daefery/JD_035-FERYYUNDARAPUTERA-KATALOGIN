@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import DashboardHeader from "@/components/DashboardHeader";
 import { BarChartIcon } from "@/components/icons";
 import SimpleAnalyticsDashboard from "@/components/SimpleAnalyticsDashboard";
 import { supabase } from "@/lib/supabase";
 import { Store } from "@/types/database";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
@@ -77,6 +77,8 @@ const AnalyticsPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      <DashboardHeader />
+
       {/* Store Selection Header */}
       <div className="p-6 border-b border-slate-700/50">
         <div className="max-w-7xl mx-auto">
@@ -113,14 +115,6 @@ const AnalyticsPage: React.FC = () => {
                   ))}
                 </select>
               </div>
-
-              {/* Test Analytics Button */}
-              <Link
-                href="/dashboard/stores"
-                className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg text-sm font-medium transition-colors"
-              >
-                Back to Dashboard
-              </Link>
             </div>
           </div>
         </div>

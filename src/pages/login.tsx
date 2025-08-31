@@ -1,4 +1,5 @@
 import { GoogleIcon, TwitterIcon } from "@/components/icons";
+import KataloginLogo from "@/components/KataloginLogo";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import ParticleBackground from "@/components/ParticleBackground";
 import { useAuth } from "@/contexts/AuthContext";
@@ -7,6 +8,7 @@ import { Geist } from "next/font/google";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const geist = Geist({
   subsets: ["latin"],
@@ -15,6 +17,7 @@ const geist = Geist({
 export default function Login() {
   const router = useRouter();
   const { user, loading, signIn, signInWithGoogle } = useAuth();
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -106,8 +109,13 @@ export default function Login() {
         <div className="w-full max-w-md">
           {/* Header */}
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-white mb-2">Welcome Back</h1>
-            <p className="text-gray-300">Sign in to your account</p>
+            <div className="mb-6 flex justify-center">
+              <KataloginLogo size="md" clickable={true} />
+            </div>
+            <h1 className="text-4xl font-bold text-white mb-2">
+              {t("auth.welcomeBack")}
+            </h1>
+            <p className="text-gray-300">{t("auth.signInToAccount")}</p>
           </div>
 
           {/* Login Form */}
@@ -123,7 +131,7 @@ export default function Login() {
                   htmlFor="email"
                   className="block text-sm font-medium text-white mb-2"
                 >
-                  Email Address
+                  {t("auth.email")}
                 </label>
                 <input
                   type="email"
@@ -133,7 +141,7 @@ export default function Login() {
                   onChange={handleChange}
                   required
                   className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
-                  placeholder="Enter your email"
+                  placeholder={t("auth.enterEmail")}
                 />
               </div>
 
@@ -142,7 +150,7 @@ export default function Login() {
                   htmlFor="password"
                   className="block text-sm font-medium text-white mb-2"
                 >
-                  Password
+                  {t("auth.password")}
                 </label>
                 <input
                   type="password"
@@ -152,7 +160,7 @@ export default function Login() {
                   onChange={handleChange}
                   required
                   className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
-                  placeholder="Enter your password"
+                  placeholder={t("auth.enterPassword")}
                 />
               </div>
 
@@ -163,14 +171,14 @@ export default function Login() {
                     className="w-4 h-4 text-purple-600 bg-white/10 border-white/20 rounded focus:ring-purple-500 focus:ring-2"
                   />
                   <span className="ml-2 text-sm text-gray-300">
-                    Remember me
+                    {t("auth.rememberMe")}
                   </span>
                 </label>
                 <Link
                   href="/forgot-password"
                   className="text-sm text-purple-400 hover:text-purple-300 transition-colors"
                 >
-                  Forgot password?
+                  {t("auth.forgotPassword")}
                 </Link>
               </div>
 
@@ -182,10 +190,10 @@ export default function Login() {
                 {isLoading ? (
                   <div className="flex items-center justify-center">
                     <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                    Signing in...
+                    {t("auth.signingIn")}
                   </div>
                 ) : (
-                  "Sign In"
+                  t("auth.login")
                 )}
               </button>
             </form>
@@ -193,12 +201,12 @@ export default function Login() {
             {/* Divider */}
             <div className="mt-6">
               <div className="relative">
-                <div className="absolute inset-0 flex items-center">
+                {/* <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-white/20"></div>
-                </div>
+                </div> */}
                 <div className="relative flex justify-center text-sm">
                   <span className="px-2 bg-transparent text-gray-300">
-                    Or continue with
+                    {t("auth.orContinueWith")}
                   </span>
                 </div>
               </div>
@@ -227,12 +235,12 @@ export default function Login() {
 
             {/* Sign Up Link */}
             <p className="mt-8 text-center text-sm text-gray-300">
-              Don&apos;t have an account?{" "}
+              {t("auth.dontHaveAccount")}{" "}
               <Link
                 href="/register"
                 className="font-medium text-purple-400 hover:text-purple-300 transition-colors"
               >
-                Sign up here
+                {t("auth.signUpHere")}
               </Link>
             </p>
           </div>

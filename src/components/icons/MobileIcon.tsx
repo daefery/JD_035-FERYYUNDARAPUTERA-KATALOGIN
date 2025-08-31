@@ -1,10 +1,8 @@
-import React from "react";
-
-interface TrendingUpIconProps {
+interface MobileIconProps {
   className?: string;
 }
 
-export default function TrendingUpIcon({ className = "" }: TrendingUpIconProps) {
+export default function MobileIcon({ className = "" }: MobileIconProps) {
   return (
     <svg
       className={className}
@@ -16,7 +14,7 @@ export default function TrendingUpIcon({ className = "" }: TrendingUpIconProps) 
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={2}
-        d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+        d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"
       />
     </svg>
   );

@@ -63,8 +63,8 @@ const OnboardingWizard = () => {
   const steps: OnboardingStep[] = [
     {
       id: "welcome",
-      title: "Welcome to Katalogin!",
-      description: "Let's create your first store in just a few steps",
+      title: "",
+      description: "",
       component: WelcomeStep,
     },
     {
