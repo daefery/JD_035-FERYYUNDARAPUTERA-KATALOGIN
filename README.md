@@ -2,6 +2,8 @@
 
 A modern, full-stack web application for creating beautiful digital catalogs and menus for restaurants, cafes, and retail stores. Built with Next.js, TypeScript, Tailwind CSS, and Supabase.
 
+Live version : https://katalogin-1nvr83j1p-ferys-projects-d8a080f5.vercel.app/
+
 ## ✨ Features
 
 ### 🎨 **Template System**
