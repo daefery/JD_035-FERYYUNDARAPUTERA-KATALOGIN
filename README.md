@@ -33,6 +33,7 @@ A modern, full-stack web application for creating beautiful digital catalogs and
 
 ### 📊 **Analytics Dashboard**
 
+
 - **Real-time Tracking** - Monitor store visits, page views, and interactions
 - **Interactive Charts** - Beautiful visualizations with Recharts
 - **Device Analytics** - Track mobile, desktop, and tablet usage
@@ -352,6 +353,13 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Mapbox** - Location services
 - **Recharts** - Chart library
 - **Vercel** - Deployment platform
+
+## 📄 Other Documentation
+- **Analytics** - [ANALYTICS_README.md](https://github.com/daefery/JD_035-FERYYUNDARAPUTERA-KATALOGIN/blob/main/ANALYTICS_README.md)
+- **Localization** - [MULTI_LANGUAGE_README.md](https://github.com/daefery/JD_035-FERYYUNDARAPUTERA-KATALOGIN/blob/main/MULTI_LANGUAGE_README.md))
+- **PDF Download** - [PDF_DOWNLOAD_README.md](https://github.com/daefery/JD_035-FERYYUNDARAPUTERA-KATALOGIN/blob/main/PDF_DOWNLOAD_README.md)
+- **Supabase** - [SUPABASE_SETUP.md](https://github.com/daefery/JD_035-FERYYUNDARAPUTERA-KATALOGIN/blob/main/SUPABASE_SETUP.md)
+- **Vercel** - [VERCEL_DEPLOYMENT.md](https://github.com/daefery/JD_035-FERYYUNDARAPUTERA-KATALOGIN/blob/main/VERCEL_DEPLOYMENT.md)
 
 ## 📞 Support
 
